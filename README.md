@@ -1,4 +1,4 @@
-# champarise_game
+# champariz_game
 
 A new Flutter project.
 
