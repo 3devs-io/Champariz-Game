@@ -1,4 +1,5 @@
 import 'package:champariz_game/home.dart';
+import 'package:champariz_game/res/router.dart';
 import 'package:flutter/material.dart';
 
 void main() => runApp(MyApp());
@@ -17,6 +18,8 @@ class MyApp extends StatelessWidget {
               .textTheme
               .apply(bodyColor: Colors.white, displayColor: Colors.white)),
       home: Home(),
+      initialRoute: HomeRoute,
+      onGenerateRoute: generateRoute,
     );
   }
 }

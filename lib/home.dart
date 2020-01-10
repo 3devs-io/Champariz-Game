@@ -53,7 +53,9 @@ class _HomeState extends State<Home> {
                   onChanged: (newValue) =>
                       setState(() => _currentValue = newValue)),
               RaisedButton(
-                onPressed: () {print(_currentValue);},
+                onPressed: () {
+                  print(_currentValue);
+                },
                 splashColor: Colors.white,
                 elevation: 8.0,
                 child: Text("Jouer"),
