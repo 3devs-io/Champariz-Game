@@ -1,3 +1,4 @@
+import 'package:champariz_game/res/router.dart';
 import 'package:flutter/material.dart';
 import 'package:numberpicker/numberpicker.dart';
 
@@ -14,57 +15,63 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
-    return Scaffold(
-        backgroundColor: Theme.of(context).primaryColor,
-        body: SafeArea(
-            child: Center(
-          child: Column(
-            children: <Widget>[
-              SizedBox(
-                height: mediaQuery.size.height / 10,
-              ),
-              FlutterLogo(
-                size: 250,
-              ),
-              SizedBox(
-                height: mediaQuery.size.height / 30,
-              ),
-              Text(
-                "Jouer à Champariz",
-                style: TextStyle(fontSize: 22.5),
-              ),
-              SizedBox(
-                height: mediaQuery.size.height / 30,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+    return WillPopScope(
+        onWillPop: () => Future.value(false),
+        child: Scaffold(
+            backgroundColor: Theme.of(context).primaryColor,
+            body: SafeArea(
+                child: Center(
+              child: Column(
                 children: <Widget>[
-                  Icon(Icons.people),
+                  SizedBox(
+                    height: mediaQuery.size.height / 10,
+                  ),
+                  FlutterLogo(
+                    size: 250,
+                  ),
+                  SizedBox(
+                    height: mediaQuery.size.height / 30,
+                  ),
                   Text(
-                    "Nombre de joueurs",
-                    style: TextStyle(fontSize: 12.5),
+                    "Jouer à Champariz",
+                    style: TextStyle(fontSize: 22.5),
+                  ),
+                  SizedBox(
+                    height: mediaQuery.size.height / 30,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Icon(Icons.people),
+                      SizedBox(
+                        width: mediaQuery.size.width / 30,
+                      ),
+                      Text(
+                        "Nombre de joueurs",
+                        style: TextStyle(fontSize: 12.5),
+                      ),
+                    ],
+                  ),
+                  NumberPicker.integer(
+                      initialValue: _currentValue,
+                      minValue: 3,
+                      maxValue: 20,
+                      onChanged: (newValue) =>
+                          setState(() => _currentValue = newValue)),
+                  RaisedButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, GameViewRoute);
+                      print(_currentValue);
+                    },
+                    splashColor: Colors.white,
+                    elevation: 8.0,
+                    child: Text("Jouer"),
+                    color: Theme.of(context).accentColor,
+                    shape: new RoundedRectangleBorder(
+                        borderRadius: new BorderRadius.circular(30.0)),
                   ),
                 ],
               ),
-              NumberPicker.integer(
-                  initialValue: _currentValue,
-                  minValue: 3,
-                  maxValue: 20,
-                  onChanged: (newValue) =>
-                      setState(() => _currentValue = newValue)),
-              RaisedButton(
-                onPressed: () {
-                  print(_currentValue);
-                },
-                splashColor: Colors.white,
-                elevation: 8.0,
-                child: Text("Jouer"),
-                color: Theme.of(context).accentColor,
-                shape: new RoundedRectangleBorder(
-                    borderRadius: new BorderRadius.circular(30.0)),
-              ),
-            ],
-          ),
-        )));
+            ))));
   }
 }
