@@ -9,32 +9,17 @@ class GameView extends StatefulWidget {
 }
 
 class _GameViewState extends State<GameView> {
-  @override
-  void initState() {
-    super.initState();
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.landscapeRight,
-      DeviceOrientation.landscapeLeft,
-    ]);
-  }
-
-  @override
-  dispose() {
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.landscapeRight,
-      DeviceOrientation.landscapeLeft,
-      DeviceOrientation.portraitUp,
-      DeviceOrientation.portraitDown,
-    ]);
-    super.dispose();
-  }
-
   List<Widget> listTest = List<Widget>();
 
   addTestWidgets() {
     for (int i = 0; i < 52; i++) {
-      listTest.add(Card(
-        child: Image(image: AssetImage('assets/2_of_clubs.png')),
+      listTest.add(Padding(
+        child: Image.asset(
+          "assets/king_of_diamonds2.png",
+          width: 100,
+          height: 50,
+        ),
+        padding: EdgeInsets.fromLTRB(5, 5, 5, 5),
       ));
     }
   }
@@ -49,11 +34,17 @@ class _GameViewState extends State<GameView> {
             child: Scaffold(
                 backgroundColor: Theme.of(context).primaryColor,
                 body: SafeArea(
-                    child: Center(
-                        child: GridView.count(  //TODO : Need to fix this, layout is currently not working as expected
-                  children: listTest,
-                  padding: EdgeInsets.all(20),
-                  crossAxisCount: 6,
-                ))))));
+                    child: Column(
+                  children: <Widget>[
+                    Text("C'est au tour de " + "Simon"),
+                    Expanded(
+                      child: GridView.count(
+                        crossAxisCount: 5,
+                        //TODO : Need to fix this, layout is currently not working as expected
+                        children: listTest,
+                      ),
+                    )
+                  ],
+                )))));
   }
 }
