@@ -1,5 +1,7 @@
+import 'package:champariz_game/card.dart' as cards;
+import 'package:champariz_game/game.dart';
+import 'package:champariz_game/player.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 class GameView extends StatefulWidget {
   GameView({Key key}) : super(key: key);
@@ -9,25 +11,40 @@ class GameView extends StatefulWidget {
 }
 
 class _GameViewState extends State<GameView> {
-  List<Widget> listTest = List<Widget>();
+  Game game = Game([Player("Simon"), Player("Théophile")]);
 
-  addTestWidgets() {
-    for (int i = 0; i < 52; i++) {
-      listTest.add(Padding(
-        child: Image.asset(
-          "assets/king_of_diamonds2.png",
-          width: 100,
-          height: 50,
+  
+
+  List<Widget> addTestWidgets() {
+    List<Widget> tempList = List<Widget>();
+
+    print(game.currentPlayer);
+
+    game.deck.cards.forEach((cards.Card card) {
+      tempList.add(GestureDetector(
+        onDoubleTap: () {
+          setState(() {
+            print("revealed");
+            card.revealed = true;
+            print(card.revealed);
+          });
+        },
+        child: Padding(
+          child: Image.asset(
+            card.revealed ? card.imagePath : "assets/back.png",
+            width: 100,
+            height: 50,
+          ),
+          padding: EdgeInsets.fromLTRB(5, 5, 5, 5),
         ),
-        padding: EdgeInsets.fromLTRB(5, 5, 5, 5),
       ));
-    }
+    });
+
+    return tempList;
   }
 
   @override
   Widget build(BuildContext context) {
-    final mediaQuery = MediaQuery.of(context);
-    addTestWidgets();
     return WillPopScope(
         onWillPop: () => Future.value(false),
         child: Container(
@@ -36,12 +53,13 @@ class _GameViewState extends State<GameView> {
                 body: SafeArea(
                     child: Column(
                   children: <Widget>[
-                    Text("C'est au tour de " + "Simon"),
+                    Container(
+                      child: Text("C'est à " + game.currentPlayer.getName()),
+                    ),
                     Expanded(
                       child: GridView.count(
                         crossAxisCount: 5,
-                        //TODO : Need to fix this, layout is currently not working as expected
-                        children: listTest,
+                        children: addTestWidgets(),
                       ),
                     )
                   ],
