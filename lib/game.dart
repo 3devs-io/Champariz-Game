@@ -9,13 +9,5 @@ class Game {
   Game(List<Player> playerList) {
     this.playerList = playerList;
     this.deck = Deck();
-    this.launch();
-  }
-
-  launch() {
-    int i = 0;
-    while (deck.cards.isNotEmpty) {
-      currentPlayer = playerList[i]; 
-    }
   }
 }

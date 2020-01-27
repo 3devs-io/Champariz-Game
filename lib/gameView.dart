@@ -4,6 +4,7 @@ import 'package:champariz_game/player.dart';
 import 'package:flutter/material.dart';
 
 class GameView extends StatefulWidget {
+  Game game;
   GameView({Key key}) : super(key: key);
 
   @override
@@ -11,16 +12,12 @@ class GameView extends StatefulWidget {
 }
 
 class _GameViewState extends State<GameView> {
-  Game game = Game([Player("Simon"), Player("Théophile")]);
-
-  
+  Game test = Game([Player("Théophile"), Player("Simon")]);
 
   List<Widget> addTestWidgets() {
     List<Widget> tempList = List<Widget>();
 
-    print(game.currentPlayer);
-
-    game.deck.cards.forEach((cards.Card card) {
+    widget.game.deck.cards.forEach((cards.Card card) {
       tempList.add(GestureDetector(
         onDoubleTap: () {
           setState(() {
@@ -54,7 +51,7 @@ class _GameViewState extends State<GameView> {
                     child: Column(
                   children: <Widget>[
                     Container(
-                      child: Text("C'est à " + game.currentPlayer.getName()),
+                      child: Text("C'est à "),
                     ),
                     Expanded(
                       child: GridView.count(
