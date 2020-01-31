@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "40881847054",
+    "firebase_url": "https://champariz.firebaseio.com",
+    "project_id": "champariz",
+    "storage_bucket": "champariz.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:40881847054:android:69a75dace876fe0ca3755f",
+        "android_client_info": {
+          "package_name": "com.synicstudios.champariz_game"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "40881847054-velvuedhf6niauvvqe68pnr9q1trj692.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyANQV3elyGDxQZzvrd0vkXBPj8x0QzsjBI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "40881847054-velvuedhf6niauvvqe68pnr9q1trj692.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
