@@ -6,16 +6,19 @@ abstract class PlayerState extends Equatable {
   const PlayerState();
 }
 
-class SelectNumberPlayer extends PlayerState {
+class SelectingNumberPlayers extends PlayerState {
   @override
   List<Object> get props => [];
 }
 
 class InputNamesPlayer extends PlayerState {
-  @override
-  List<Object> get props => [];
-}
+  final int playerNumber;
 
+  const InputNamesPlayer(this.playerNumber);
+
+  @override
+  List<Object> get props => [playerNumber];
+}
 
 class PlayerError extends PlayerState {
   @override

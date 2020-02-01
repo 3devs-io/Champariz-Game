@@ -4,22 +4,21 @@ import './bloc.dart';
 
 class PlayerBloc extends Bloc<PlayerEvent, PlayerState> {
   @override
-  PlayerState get initialState => SelectNumberPlayer();
+  PlayerState get initialState => SelectingNumberPlayers();
 
   @override
   Stream<PlayerState> mapEventToState(
     PlayerEvent event,
   ) async* {
     if (event is SelectedNumber) {
-      yield* _mapLoadCartToState();
+      yield* _selectNamesOfPlayers(event.number);
     }
   }
 
-  Stream<PlayerState> _mapLoadCartToState() async* {
-    yield SelectNumberPlayer();
+  Stream<PlayerState> _selectNamesOfPlayers(int numberOfPlayer) async* {
+    yield SelectingNumberPlayers();
     try {
-      await Future.delayed(Duration(seconds: 1));
-      yield InputNamesPlayer();
+      yield InputNamesPlayer(numberOfPlayer);
     } catch (_) {
       yield PlayerError();
     }
