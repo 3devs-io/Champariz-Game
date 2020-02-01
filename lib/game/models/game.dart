@@ -1,5 +1,5 @@
 import 'package:champariz_game/card.dart';
-import 'package:champariz_game/player.dart';
+import 'package:champariz_game/player/models/player.dart';
 
 class Game {
   List<Player> playerList;

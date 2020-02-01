@@ -1,6 +1,6 @@
 import 'package:champariz_game/card.dart' as cards;
 import 'package:champariz_game/game/models/game.dart';
-import 'package:champariz_game/player.dart';
+import 'package:champariz_game/player/models/player.dart';
 import 'package:flutter/material.dart';
 
 class GameView extends StatefulWidget {
