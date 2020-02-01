@@ -1,4 +1,4 @@
-import 'package:champariz_game/res/router.dart';
+import 'package:champariz_game/router.dart';
 import 'package:flutter/material.dart';
 import 'package:numberpicker/numberpicker.dart';
 
