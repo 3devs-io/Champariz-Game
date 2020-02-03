@@ -15,6 +15,15 @@ class SelectedNumber extends PlayerEvent {
   List<Object> get props => [number];
 }
 
+class SelectName extends PlayerEvent {
+  final String name;
+
+  const SelectName(this.name);
+
+  @override
+  List<Object> get props => [name];
+}
+
 class SelectedNames extends PlayerEvent {
   final List<String> playersNames;
 

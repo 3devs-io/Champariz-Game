@@ -1,3 +1,4 @@
+import 'package:champariz_game/game/models/game.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 
@@ -12,12 +13,12 @@ class SelectingNumberPlayers extends PlayerState {
 }
 
 class InputNamesPlayer extends PlayerState {
-  final int playerNumber;
+  final Game game;
 
-  const InputNamesPlayer(this.playerNumber);
+  const InputNamesPlayer(this.game);
 
   @override
-  List<Object> get props => [playerNumber];
+  List<Object> get props => [game];
 }
 
 class PlayerError extends PlayerState {

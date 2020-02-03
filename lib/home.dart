@@ -12,8 +12,7 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  int _currentValue = 5;
-
+  TextEditingController _textEditingController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
@@ -24,24 +23,59 @@ class _HomeState extends State<Home> {
             body: SafeArea(child:
                 BlocBuilder<PlayerBloc, PlayerState>(builder: (context, state) {
               if (state is InputNamesPlayer) {
+                List<Widget> names = List<Widget>();
+                state.game.playerList.forEach((name) {
+                  names.add(Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                      child: Text(name.getName())));
+                });
                 return Center(
                   child: Column(
                     children: <Widget>[
                       SizedBox(
-                        height: mediaQuery.size.height / 10,
+                        height: mediaQuery.size.height / 20,
                       ),
                       FlutterLogo(
                         size: 250,
                       ),
                       SizedBox(
-                        height: mediaQuery.size.height / 30,
+                        height: mediaQuery.size.height / 40,
                       ),
                       Text(
                         "Entrez le nom des différents joueurs",
                         style: TextStyle(fontSize: 22.5),
                       ),
                       SizedBox(
-                        height: mediaQuery.size.height / 30,
+                        height: mediaQuery.size.height / 40,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                        child: TextField(
+                          controller: _textEditingController,
+                          textInputAction: TextInputAction.send,
+                          decoration: InputDecoration.collapsed(
+                            hintText: "Entrez un nom",
+                            hintStyle: TextStyle(color: Colors.white),
+                          ),
+                          style: TextStyle(color: Colors.white),
+                          maxLines: 1,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 16.0),
+                        child: RaisedButton(
+                          onPressed: () {
+                            BlocProvider.of<PlayerBloc>(context).add(SelectName(
+                                _textEditingController.value.text.toString()));
+                            _textEditingController.clear();
+                          },
+                          child: Text('Submit'),
+                        ),
+                      ),
+                      Expanded(
+                        child: ListView(
+                          children: names,
+                        ),
                       ),
                     ],
                   ),
@@ -49,6 +83,7 @@ class _HomeState extends State<Home> {
               }
 
               if (state is SelectingNumberPlayers) {
+                int _currentValue = 5;
                 return Center(
                   child: Column(
                     children: <Widget>[
@@ -103,6 +138,7 @@ class _HomeState extends State<Home> {
                   ),
                 );
               }
+              return Text('Something went wrong!');
             }))));
   }
 }

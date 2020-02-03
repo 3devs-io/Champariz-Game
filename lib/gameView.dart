@@ -12,7 +12,7 @@ class GameView extends StatefulWidget {
 }
 
 class _GameViewState extends State<GameView> {
-  Game test = Game([Player("Théophile"), Player("Simon")]);
+  Game test = Game(1);
 
   List<Widget> addTestWidgets() {
     List<Widget> tempList = List<Widget>();
