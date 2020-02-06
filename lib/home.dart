@@ -1,3 +1,4 @@
+import 'package:champariz_game/game/bloc/bloc.dart';
 import 'package:champariz_game/player/bloc/bloc.dart';
 import 'package:champariz_game/router.dart';
 import 'package:flutter/material.dart';
@@ -143,7 +144,8 @@ class _HomeState extends State<Home> {
                   return Text('Something went wrong!');
                 })))),
         listener: (context, state) {
-          if (state is Test) {
+          if (state is GameStart) {
+            BlocProvider.of<GameBloc>(context).add(Init(state.game));
             Navigator.pushNamed(context, GameViewRoute);
           }
         });

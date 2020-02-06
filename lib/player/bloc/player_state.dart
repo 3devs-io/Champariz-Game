@@ -21,9 +21,12 @@ class InputNamesPlayer extends PlayerState {
   List<Object> get props => [game];
 }
 
-class Test extends PlayerState {
+class GameStart extends PlayerState {
+  final Game game;
+
+  const GameStart(this.game);
   @override
-  List<Object> get props => [];
+  List<Object> get props => [game];
 }
 
 class PlayerError extends PlayerState {

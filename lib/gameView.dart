@@ -1,10 +1,11 @@
 import 'package:champariz_game/card.dart' as cards;
+import 'package:champariz_game/game/bloc/bloc.dart';
 import 'package:champariz_game/game/models/game.dart';
 import 'package:champariz_game/player/models/player.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class GameView extends StatefulWidget {
-  Game game;
   GameView({Key key}) : super(key: key);
 
   @override
@@ -12,12 +13,10 @@ class GameView extends StatefulWidget {
 }
 
 class _GameViewState extends State<GameView> {
-  Game test = Game(1);
-
-  List<Widget> addTestWidgets() {
+  List<Widget> addTestWidgets(Game game) {
     List<Widget> tempList = List<Widget>();
 
-    widget.game.deck.cards.forEach((cards.Card card) {
+    game.deck.cards.forEach((cards.Card card) {
       tempList.add(GestureDetector(
         onDoubleTap: () {
           setState(() {
@@ -44,22 +43,28 @@ class _GameViewState extends State<GameView> {
   Widget build(BuildContext context) {
     return WillPopScope(
         onWillPop: () => Future.value(false),
-        child: Container(
-            child: Scaffold(
-                backgroundColor: Theme.of(context).primaryColor,
-                body: SafeArea(
-                    child: Column(
-                  children: <Widget>[
-                    Container(
-                      child: Text("C'est à "),
-                    ),
-                    Expanded(
-                      child: GridView.count(
-                        crossAxisCount: 5,
-                        children: addTestWidgets(),
-                      ),
-                    )
-                  ],
-                )))));
+        child: BlocBuilder<GameBloc, GameState>(builder: (context, state) {
+          if (state is GameLoading) {
+            return Container(
+                child: Scaffold(
+                    backgroundColor: Theme.of(context).primaryColor,
+                    body: SafeArea(
+                        child: Column(
+                      children: <Widget>[
+                        Container(
+                          child: Text("C'est à "),
+                        ),
+                        Expanded(
+                          child: GridView.count(
+                            crossAxisCount: 5,
+                            children: addTestWidgets(state.game),
+                          ),
+                        )
+                      ],
+                    ))));
+          }
+
+          return Text("An error has occured");
+        }));
   }
 }
