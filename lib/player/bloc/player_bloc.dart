@@ -36,7 +36,11 @@ class PlayerBloc extends Bloc<PlayerEvent, PlayerState> {
       final InputNamesPlayer currentState = state;
       Game currentGame = currentState.game;
       currentGame.addPlayer(Player(name));
-      yield InputNamesPlayer(currentGame);
+      if (currentGame.numberOfPlayers == currentGame.playerList.length) {
+        yield Test();
+      } else {
+        yield InputNamesPlayer(currentGame);
+      }
     } catch (_) {
       yield PlayerError();
     }

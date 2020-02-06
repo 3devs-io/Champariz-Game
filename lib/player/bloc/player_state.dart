@@ -21,6 +21,11 @@ class InputNamesPlayer extends PlayerState {
   List<Object> get props => [game];
 }
 
+class Test extends PlayerState {
+  @override
+  List<Object> get props => [];
+}
+
 class PlayerError extends PlayerState {
   @override
   List<Object> get props => [];
