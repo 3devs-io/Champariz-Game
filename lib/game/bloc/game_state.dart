@@ -7,15 +7,20 @@ abstract class GameState extends Equatable {
   const GameState();
 }
 
-class GameLoading extends GameState {
+class UnloadedGame extends GameState {
+  @override
+  List<Object> get props => [];
+}
+
+class LoadingGame extends GameState {
   final Game game;
 
-  const GameLoading(this.game);
+  const LoadingGame(this.game);
   @override
   List<Object> get props => [game];
 }
 
-class GameLoaded extends GameState {
+class LoadedGame extends GameState {
   @override
   List<Object> get props => [];
 }

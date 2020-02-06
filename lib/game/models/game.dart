@@ -1,4 +1,4 @@
-import 'package:champariz_game/card.dart';
+import 'package:champariz_game/card/models/card.dart';
 import 'package:champariz_game/player/models/player.dart';
 
 class Game {

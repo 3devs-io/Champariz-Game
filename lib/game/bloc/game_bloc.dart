@@ -5,24 +5,24 @@ import './bloc.dart';
 
 class GameBloc extends Bloc<GameEvent, GameState> {
   @override
-  GameState get initialState => GameLoaded();
+  GameState get initialState => UnloadedGame();
 
   @override
   Stream<GameState> mapEventToState(
     GameEvent event,
   ) async* {
-    if (event is Init) {
+    if (event is GameLoading) {
       yield* _mapInit(event.game);
     }
-    if (event is LoadGame) {
+    if (event is LoadedGame) {
       yield* _mapLoadCartToState();
     }
   }
 
   Stream<GameState> _mapInit(Game game) async* {
-    yield GameLoading(game);
+    yield LoadingGame(game);
     try {
-      yield GameLoading(game);
+      yield LoadingGame(game);
     } catch (_) {
       yield GameError();
     }
@@ -30,8 +30,7 @@ class GameBloc extends Bloc<GameEvent, GameState> {
 
   Stream<GameState> _mapLoadCartToState() async* {
     try {
-      await Future.delayed(Duration(seconds: 1));
-      yield GameLoaded();
+      yield LoadedGame();
     } catch (_) {
       yield GameError();
     }

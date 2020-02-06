@@ -1,7 +1,6 @@
-import 'package:champariz_game/card.dart' as cards;
+import 'package:champariz_game/card/models/card.dart' as cards;
 import 'package:champariz_game/game/bloc/bloc.dart';
 import 'package:champariz_game/game/models/game.dart';
-import 'package:champariz_game/player/models/player.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -44,7 +43,7 @@ class _GameViewState extends State<GameView> {
     return WillPopScope(
         onWillPop: () => Future.value(false),
         child: BlocBuilder<GameBloc, GameState>(builder: (context, state) {
-          if (state is GameLoading) {
+          if (state is LoadingGame) {
             return Container(
                 child: Scaffold(
                     backgroundColor: Theme.of(context).primaryColor,
