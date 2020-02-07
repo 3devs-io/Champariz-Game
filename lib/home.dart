@@ -13,6 +13,7 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  //TODO : Scrollable view to make the actual text to type in visible
   int _currentValue = 5;
   TextEditingController _textEditingController = TextEditingController();
 
@@ -29,6 +30,7 @@ class _HomeState extends State<Home> {
         child: WillPopScope(
             onWillPop: () => Future.value(false),
             child: Scaffold(
+                resizeToAvoidBottomPadding: false,
                 backgroundColor: Theme.of(context).primaryColor,
                 body: SafeArea(child: BlocBuilder<PlayerBloc, PlayerState>(
                     builder: (context, state) {
