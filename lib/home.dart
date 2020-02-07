@@ -15,6 +15,13 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   int _currentValue = 5;
   TextEditingController _textEditingController = TextEditingController();
+
+  _submit() {
+    BlocProvider.of<PlayerBloc>(context)
+        .add(SelectName(_textEditingController.value.text.toString()));
+    _textEditingController.clear();
+  }
+
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
@@ -55,6 +62,9 @@ class _HomeState extends State<Home> {
                             padding: EdgeInsets.symmetric(horizontal: 16.0),
                             child: TextField(
                               controller: _textEditingController,
+                              onSubmitted: (String submitted) {
+                                _submit();
+                              },
                               textInputAction: TextInputAction.send,
                               decoration: InputDecoration.collapsed(
                                 hintText: "Entrez un nom",
@@ -68,10 +78,7 @@ class _HomeState extends State<Home> {
                             padding: EdgeInsets.symmetric(vertical: 16.0),
                             child: RaisedButton(
                               onPressed: () {
-                                BlocProvider.of<PlayerBloc>(context).add(
-                                    SelectName(_textEditingController.value.text
-                                        .toString()));
-                                _textEditingController.clear();
+                                _submit();
                               },
                               child: Text('Submit'),
                             ),
