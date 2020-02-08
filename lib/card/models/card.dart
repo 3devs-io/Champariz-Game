@@ -4,7 +4,6 @@ class Card {
   String imagePath;
   String value;
   String family;
-  bool revealed = false;
 
   Card({
     this.imagePath,
