@@ -17,12 +17,7 @@ class LoadingGame extends GameState {
 
   const LoadingGame(this.game);
   @override
-  List<Object> get props => [game];
-}
-
-class LoadedGame extends GameState {
-  @override
-  List<Object> get props => [];
+  List<Object> get props => [game.actualDeck.cards];
 }
 
 class GameError extends GameState {

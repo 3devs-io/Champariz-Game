@@ -13,10 +13,10 @@ class GameView extends StatefulWidget {
 }
 
 class _GameViewState extends State<GameView> {
-  List<Widget> cards(LoadingGame state) {
+  List<Widget> cards(Game game) {
     List<Widget> tempList = List<Widget>();
 
-    state.game.deck.cards.forEach((card) {
+    game.deck.cards.forEach((card) {
       tempList.add(WardW(
         card: card,
       ));
@@ -46,7 +46,7 @@ class _GameViewState extends State<GameView> {
                           child: Expanded(
                             child: GridView.count(
                               crossAxisCount: 5,
-                              children: cards(state),
+                              children: cards(state.game),
                             ),
                           ),
                         )
@@ -70,7 +70,9 @@ class WardW extends StatefulWidget {
 class _WardWState extends State<WardW> {
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<GameBloc, GameState>(builder: (context, state) {
+    return BlocBuilder<GameBloc, GameState>(condition: (previousState, state) {
+      return previousState != state;
+    }, builder: (context, state) {
       if (state is LoadingGame) {
         print(state.game.actualDeck.cards.length.toString() + " lol");
         return Container(
@@ -91,6 +93,8 @@ class _WardWState extends State<WardW> {
           ),
         ));
       }
+
+      return Text("An error has occured");
     });
   }
 }

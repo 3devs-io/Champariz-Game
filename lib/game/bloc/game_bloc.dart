@@ -15,9 +15,6 @@ class GameBloc extends Bloc<GameEvent, GameState> {
     if (event is GameLoading) {
       yield* _mapInit(event.game);
     }
-    if (event is LoadedGame) {
-      yield* _mapLoadCartToState();
-    }
     if (event is CardTappedGame) {
       yield* _mapLoadCartToState2(event.game, event.tapped);
     }
@@ -28,14 +25,6 @@ class GameBloc extends Bloc<GameEvent, GameState> {
     yield LoadingGame(game);
     try {
       yield LoadingGame(game);
-    } catch (_) {
-      yield GameError();
-    }
-  }
-
-  Stream<GameState> _mapLoadCartToState() async* {
-    try {
-      yield LoadedGame();
     } catch (_) {
       yield GameError();
     }
