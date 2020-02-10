@@ -1,6 +1,7 @@
+import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 
-class Card {
+class Card extends Equatable {
   String imagePath;
   String value;
   String family;
@@ -21,6 +22,21 @@ class Card {
       padding: EdgeInsets.fromLTRB(5, 5, 5, 5),
     );
   }
+
+  bool isSeven() {
+    return value == "7";
+  }
+
+  bool pair(Card card) {
+    return value == card.value;
+  }
+
+  bool sameFamily(Card card) {
+    return family == card.family;
+  }
+
+  @override
+  List<Object> get props => [value, family];
 }
 
 class Deck {

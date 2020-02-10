@@ -16,7 +16,7 @@ class GameBloc extends Bloc<GameEvent, GameState> {
       yield* _mapInit(event.game);
     }
     if (event is CardTappedGame) {
-      yield* _mapLoadCartToState2(event.game, event.tapped);
+      yield* _mapCardTapped(event.game, event.tapped);
     }
   }
 
@@ -30,11 +30,26 @@ class GameBloc extends Bloc<GameEvent, GameState> {
     }
   }
 
-  Stream<GameState> _mapLoadCartToState2(Game game, cards.Card card) async* {
-    yield GameError();
+  Stream<GameState> _mapCardTapped(Game game, cards.Card card) async* {
+    yield GameError(); //Yield GameError to change the old state, preventing from sending the same state twice
     try {
-      //print(card.value + " of " + card.family + " has been tapped");
-      game.removeCardFromDeck(card);
+      game.play(card);
+      if (card.isSeven()) {
+        //Faire boire cul sec au joueur actuel
+        yield DrinkingGame("Cul sec", game.currentPlayer);
+        game.nextPlayer();
+      } else {
+        if (game.lastCardPlayed.pair(card)) {
+          yield DrinkingGame(card.value, game.currentPlayer);
+          game.nextPlayer();
+        } else {
+          if (game.lastCardPlayed.sameFamily(card)) {
+            yield DrinkingGame("3", game.currentPlayer);
+            game.nextPlayer();
+          }
+        }
+      }
+
       yield LoadingGame(game);
     } catch (_) {
       yield GameError();

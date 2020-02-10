@@ -1,4 +1,5 @@
 import 'package:champariz_game/game/models/game.dart';
+import 'package:champariz_game/player/models/player.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 
@@ -23,4 +24,14 @@ class LoadingGame extends GameState {
 class GameError extends GameState {
   @override
   List<Object> get props => [];
+}
+
+class DrinkingGame extends GameState {
+  final String toDrink;
+  final Player player;
+
+  const DrinkingGame(this.toDrink, this.player);
+
+  @override
+  List<Object> get props => [toDrink, player];
 }

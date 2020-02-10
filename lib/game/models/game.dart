@@ -8,6 +8,7 @@ class Game {
   Deck deck;
   Player currentPlayer;
   Deck actualDeck;
+  cards.Card lastCardPlayed;
 
   Game(int numberOfPlayers) {
     this.numberOfPlayers = numberOfPlayers;
@@ -20,12 +21,22 @@ class Game {
     this.playerList.add(playerToAdd);
   }
 
+  nextPlayer() {
+    int index = this.playerList.indexOf(this.currentPlayer);
+    if (index == this.playerList.length) {
+      this.currentPlayer = this.playerList[0];
+    } else {
+      this.currentPlayer = this.playerList[index + 1];
+    }
+  }
+
   initGame() {
     currentPlayer = playerList[0]; //Setting up first player
     deck.cards.shuffle(); //Randomizing cards
   }
 
-  removeCardFromDeck(cards.Card cardToRemove) {
+  play(cards.Card cardToRemove) {
     actualDeck.cards.remove(cardToRemove);
+    lastCardPlayed = cardToRemove;
   }
 }
