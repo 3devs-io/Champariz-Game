@@ -28,29 +28,60 @@ class _GameViewState extends State<GameView> {
   Widget build(BuildContext context) {
     return WillPopScope(
         onWillPop: () => Future.value(false),
-        child: BlocBuilder<GameBloc, GameState>(builder: (context, state) {
-          if (state is LoadingGame) {
-            return Container(
-                child: Scaffold(
-                    backgroundColor: Theme.of(context).primaryColor,
-                    body: SafeArea(
-                        child: Column(
-                      children: <Widget>[
-                        Container(
-                          child: Text("C'est à "),
-                        ),
-                        Expanded(
-                          child: GridView.count(
-                            crossAxisCount: 5,
-                            children: cards(state.game),
+        child: BlocListener<GameBloc, GameState>(
+          listener: (context, state) {
+            if (state is DrinkingGame) {
+              showDialog<void>(
+                context: context,
+                barrierDismissible: false, // user must tap button!
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    title: Text('Rewind and remember'),
+                    content: SingleChildScrollView(
+                      child: ListBody(
+                        children: <Widget>[
+                          Text('You will never be satisfied.'),
+                          Text('You\’re like me. I’m never satisfied.'),
+                        ],
+                      ),
+                    ),
+                    actions: <Widget>[
+                      FlatButton(
+                        child: Text('Regret'),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                    ],
+                  );
+                },
+              );
+            }
+          },
+          child: BlocBuilder<GameBloc, GameState>(builder: (context, state) {
+            if (state is LoadingGame) {
+              return Container(
+                  child: Scaffold(
+                      backgroundColor: Theme.of(context).primaryColor,
+                      body: SafeArea(
+                          child: Column(
+                        children: <Widget>[
+                          Container(
+                            child: Text("C'est à "),
                           ),
-                        ),
-                      ],
-                    ))));
-          }
+                          Expanded(
+                            child: GridView.count(
+                              crossAxisCount: 5,
+                              children: cards(state.game),
+                            ),
+                          ),
+                        ],
+                      ))));
+            }
 
-          return Text("An error has occured");
-        }));
+            return Text("An error has occured");
+          }),
+        ));
   }
 }
 

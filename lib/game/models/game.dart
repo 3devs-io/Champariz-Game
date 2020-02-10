@@ -28,6 +28,7 @@ class Game {
     } else {
       this.currentPlayer = this.playerList[index + 1];
     }
+    lastCardPlayed = null;
   }
 
   initGame() {

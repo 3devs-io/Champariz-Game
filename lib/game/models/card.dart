@@ -2,9 +2,9 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 
 class Card extends Equatable {
-  String imagePath;
-  String value;
-  String family;
+  final String imagePath;
+  final String value;
+  final String family;
 
   Card({
     this.imagePath,
@@ -28,6 +28,7 @@ class Card extends Equatable {
   }
 
   bool pair(Card card) {
+    print("compare " + value + " avec " + card.value);
     return value == card.value;
   }
 
