@@ -1,7 +1,7 @@
 import 'package:champariz_game/game/models/game.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
-import 'package:champariz_game/card/models/card.dart' as cards;
+import 'package:champariz_game/game/models/card.dart' as cards;
 
 @immutable
 abstract class GameEvent extends Equatable {

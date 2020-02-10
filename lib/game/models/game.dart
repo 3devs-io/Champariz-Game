@@ -1,6 +1,6 @@
-import 'package:champariz_game/card/models/card.dart';
+import 'package:champariz_game/game/models/card.dart';
 import 'package:champariz_game/player/models/player.dart';
-import 'package:champariz_game/card/models/card.dart' as cards;
+import 'package:champariz_game/game/models/card.dart' as cards;
 
 class Game {
   int numberOfPlayers;
@@ -13,7 +13,7 @@ class Game {
     this.numberOfPlayers = numberOfPlayers;
     this.playerList = List<Player>();
     this.deck = Deck();
-    this.actualDeck = deck;
+    this.actualDeck = Deck.fromCards(this.deck.cards);
   }
 
   addPlayer(Player playerToAdd) {
@@ -27,6 +27,5 @@ class Game {
 
   removeCardFromDeck(cards.Card cardToRemove) {
     actualDeck.cards.remove(cardToRemove);
-    print(actualDeck.cards.length);
   }
 }

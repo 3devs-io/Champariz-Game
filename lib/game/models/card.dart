@@ -25,6 +25,11 @@ class Card {
 
 class Deck {
   List<Card> cards = List<Card>();
+
+  Deck.fromCards(List<Card> test) {
+    cards = List<Card>.from(test);
+  }
+
   Deck() {
     List<String> listeFamille = List<String>();
     listeFamille.add("clubs");

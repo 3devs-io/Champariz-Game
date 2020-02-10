@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:champariz_game/game/models/game.dart';
 import './bloc.dart';
-import 'package:champariz_game/card/models/card.dart' as cards;
+import 'package:champariz_game/game/models/card.dart' as cards;
 
 class GameBloc extends Bloc<GameEvent, GameState> {
   @override
@@ -31,8 +31,9 @@ class GameBloc extends Bloc<GameEvent, GameState> {
   }
 
   Stream<GameState> _mapLoadCartToState2(Game game, cards.Card card) async* {
+    yield GameError();
     try {
-      print(card.value + " of " + card.family + " has been tapped");
+      //print(card.value + " of " + card.family + " has been tapped");
       game.removeCardFromDeck(card);
       yield LoadingGame(game);
     } catch (_) {

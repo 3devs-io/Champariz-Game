@@ -1,5 +1,4 @@
-import 'package:champariz_game/card/bloc/bloc.dart';
-import 'package:champariz_game/card/models/card.dart' as cards;
+import 'package:champariz_game/game/models/card.dart' as cards;
 import 'package:champariz_game/game/bloc/bloc.dart';
 import 'package:champariz_game/game/models/game.dart';
 import 'package:flutter/material.dart';
@@ -31,7 +30,6 @@ class _GameViewState extends State<GameView> {
         onWillPop: () => Future.value(false),
         child: BlocBuilder<GameBloc, GameState>(builder: (context, state) {
           if (state is LoadingGame) {
-            print("test");
             return Container(
                 child: Scaffold(
                     backgroundColor: Theme.of(context).primaryColor,
@@ -41,15 +39,12 @@ class _GameViewState extends State<GameView> {
                         Container(
                           child: Text("C'est à "),
                         ),
-                        BlocProvider(
-                          create: (BuildContext context) => CardBloc(),
-                          child: Expanded(
-                            child: GridView.count(
-                              crossAxisCount: 5,
-                              children: cards(state.game),
-                            ),
+                        Expanded(
+                          child: GridView.count(
+                            crossAxisCount: 5,
+                            children: cards(state.game),
                           ),
-                        )
+                        ),
                       ],
                     ))));
           }
@@ -70,11 +65,8 @@ class WardW extends StatefulWidget {
 class _WardWState extends State<WardW> {
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<GameBloc, GameState>(condition: (previousState, state) {
-      return previousState != state;
-    }, builder: (context, state) {
+    return BlocBuilder<GameBloc, GameState>(builder: (context, state) {
       if (state is LoadingGame) {
-        print(state.game.actualDeck.cards.length.toString() + " lol");
         return Container(
             child: GestureDetector(
           onDoubleTap: () {
