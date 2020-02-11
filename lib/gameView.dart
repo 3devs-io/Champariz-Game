@@ -36,18 +36,24 @@ class _GameViewState extends State<GameView> {
                 barrierDismissible: false, // user must tap button!
                 builder: (BuildContext context) {
                   return AlertDialog(
-                    title: Text('Rewind and remember'),
+                    title: Text('Il est temps de boire !'),
                     content: SingleChildScrollView(
                       child: ListBody(
                         children: <Widget>[
-                          Text('You will never be satisfied.'),
-                          Text('You\’re like me. I’m never satisfied.'),
+                          Text(
+                            "Le joueur " +
+                                state.player.getName() +
+                                " bois  " +
+                                state.toDrink,
+                            style: TextStyle(color: Colors.black),
+                          ),
                         ],
                       ),
                     ),
                     actions: <Widget>[
                       FlatButton(
-                        child: Text('Regret'),
+                        child: Text(
+                            'Regretter de jouer à des jeux d\'alcool et boire pour oublier'),
                         onPressed: () {
                           Navigator.of(context).pop();
                         },
