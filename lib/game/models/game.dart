@@ -21,23 +21,26 @@ class Game {
     this.playerList.add(playerToAdd);
   }
 
-  nextPlayer() {
-    int index = this.playerList.indexOf(this.currentPlayer);
-    if (index == this.playerList.length) {
-      this.currentPlayer = this.playerList[0];
-    } else {
-      this.currentPlayer = this.playerList[index + 1];
-    }
-    lastCardPlayed = null;
-  }
-
   initGame() {
     currentPlayer = playerList[0]; //Setting up first player
     deck.cards.shuffle(); //Randomizing cards
   }
 
-  play(cards.Card cardToRemove) {
+  nextPlayer() {
+    int index = this.playerList.indexOf(this.currentPlayer);
+    if (index == this.playerList.length - 1) {
+      this.currentPlayer = this.playerList[0];
+    } else {
+      this.currentPlayer = this.playerList[index + 1];
+    }
+  }
+
+  play(cards.Card cardToRemove, bool last) {
     actualDeck.cards.remove(cardToRemove);
-    lastCardPlayed = cardToRemove;
+    if (last) {
+      lastCardPlayed = null;
+    } else {
+      lastCardPlayed = cardToRemove;
+    }
   }
 }
