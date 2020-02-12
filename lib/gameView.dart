@@ -73,7 +73,7 @@ class _GameViewState extends State<GameView> {
                           child: Column(
                         children: <Widget>[
                           Container(
-                            child: Text("C'est à "),
+                            child: Text("C'est à " + state.game.currentPlayer.getName() + " de jouer"),
                           ),
                           Expanded(
                             child: GridView.count(

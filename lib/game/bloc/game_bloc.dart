@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 import 'package:bloc/bloc.dart';
 import 'package:champariz_game/game/models/game.dart';
 import './bloc.dart';
@@ -49,15 +50,21 @@ class GameBloc extends Bloc<GameEvent, GameState> {
             } else {
               last = true;
               yield DrinkingGame(
-                  "un montant qu'il est encore nécessaire de calculer",
+                  sqrt((game.lastCardPlayed.valueToInt() - card.valueToInt()) *
+                              (game.lastCardPlayed.valueToInt() -
+                                  card.valueToInt()))
+                          .toInt()
+                          .toString() +
+                      " gorgées",
                   game.currentPlayer);
             }
           }
         }
       }
 
-      print(last.toString());
-      game.nextPlayer();
+      if (last) {
+        game.nextPlayer();
+      }
       game.play(card, last);
       yield LoadingGame(game);
     } catch (_) {
