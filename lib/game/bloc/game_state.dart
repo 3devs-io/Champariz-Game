@@ -29,9 +29,10 @@ class GameError extends GameState {
 class DrinkingGame extends GameState {
   final String toDrink;
   final List<Player> players;
+  final bool isFinished;
 
-  const DrinkingGame(this.toDrink, this.players);
+  const DrinkingGame(this.toDrink, this.players, this.isFinished);
 
   @override
-  List<Object> get props => [toDrink, players];
+  List<Object> get props => [toDrink, players, isFinished];
 }

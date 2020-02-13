@@ -34,22 +34,25 @@ class GameBloc extends Bloc<GameEvent, GameState> {
   Stream<GameState> _mapCardTapped(Game game, cards.Card card) async* {
     yield GameError(); //Yield GameError to change the old state, preventing from sending the same state twice
     try {
+      bool isFinished = game.actualDeck.cards.length == 1;
       bool last = false;
       if (card.isSeven()) {
         last = true;
-        yield DrinkingGame("Tu prends cul sec", [game.currentPlayer]);
+        yield DrinkingGame(
+            "Tu prends cul sec", [game.currentPlayer], isFinished);
       } else {
         if ((game.lastCardPlayed != null)) {
           if (game.lastCardPlayed.pair(card)) {
             last = true;
             yield DrinkingGame(
                 "Tu distribue " + card.valueToInt().toString() + " gorgées",
-                [game.currentPlayer]);
+                [game.currentPlayer],
+                isFinished);
           } else {
             if (game.lastCardPlayed.sameFamily(card)) {
               last = true;
               yield DrinkingGame(
-                  "Vous buvez tous 3 gorgées ! ", game.playerList);
+                  "Vous buvez tous 3 gorgées ! ", game.playerList, isFinished);
             } else {
               last = true;
               yield DrinkingGame(
@@ -61,7 +64,8 @@ class GameBloc extends Bloc<GameEvent, GameState> {
                           .toInt()
                           .toString() +
                       " gorgées",
-                  [game.currentPlayer]);
+                  [game.currentPlayer],
+                  isFinished);
             }
           }
         }
@@ -71,6 +75,7 @@ class GameBloc extends Bloc<GameEvent, GameState> {
         game.nextPlayer();
       }
       game.play(card, last);
+
       yield LoadingGame(game);
     } catch (_) {
       print(_);

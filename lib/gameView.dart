@@ -1,6 +1,7 @@
 import 'package:champariz_game/game/models/card.dart' as cards;
 import 'package:champariz_game/game/bloc/bloc.dart';
 import 'package:champariz_game/game/models/game.dart';
+import 'package:champariz_game/router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -60,7 +61,11 @@ class _GameViewState extends State<GameView> {
                         child: Text(
                             'Regretter de jouer à des jeux d\'alcool et boire pour oublier'),
                         onPressed: () {
-                          Navigator.of(context).pop();
+                          if (state.isFinished) {
+                            Navigator.pushNamed(context, HomeRoute);
+                          } else {
+                            Navigator.of(context).pop();
+                          }
                         },
                       ),
                     ],
