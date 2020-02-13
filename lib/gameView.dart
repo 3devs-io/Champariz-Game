@@ -35,16 +35,21 @@ class _GameViewState extends State<GameView> {
                 context: context,
                 barrierDismissible: false, // user must tap button!
                 builder: (BuildContext context) {
+                  String players;
+                  state.players.forEach((player) {
+                    players = player.getName() + " ";
+                  });
                   return AlertDialog(
                     title: Text('Il est temps de boire !'),
                     content: SingleChildScrollView(
                       child: ListBody(
                         children: <Widget>[
                           Text(
-                            "Le joueur " +
-                                state.player.getName() +
-                                " bois  " +
-                                state.toDrink,
+                            "Joueur(s) : " + players,
+                            style: TextStyle(color: Colors.black),
+                          ),
+                          Text(
+                            state.toDrink,
                             style: TextStyle(color: Colors.black),
                           ),
                         ],
@@ -73,7 +78,9 @@ class _GameViewState extends State<GameView> {
                           child: Column(
                         children: <Widget>[
                           Container(
-                            child: Text("C'est à " + state.game.currentPlayer.getName() + " de jouer"),
+                            child: Text("C'est à " +
+                                state.game.currentPlayer.getName() +
+                                " de jouer"),
                           ),
                           Expanded(
                             child: GridView.count(
