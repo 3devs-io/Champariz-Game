@@ -37,20 +37,25 @@ class GameBloc extends Bloc<GameEvent, GameState> {
       bool last = false;
       if (card.isSeven()) {
         last = true;
-        yield DrinkingGame("tu prends cul sec", [game.currentPlayer]);
+        yield DrinkingGame("Tu prends cul sec", [game.currentPlayer]);
       } else {
         if ((game.lastCardPlayed != null)) {
           if (game.lastCardPlayed.pair(card)) {
             last = true;
-            yield DrinkingGame("une paire", [game.currentPlayer]);
+            yield DrinkingGame(
+                "Tu distribue " + card.valueToInt().toString() + " gorgées",
+                [game.currentPlayer]);
           } else {
             if (game.lastCardPlayed.sameFamily(card)) {
               last = true;
-              yield DrinkingGame("une famille", [game.currentPlayer]);
+              yield DrinkingGame(
+                  "Vous buvez tous 3 gorgées ! ", game.playerList);
             } else {
               last = true;
               yield DrinkingGame(
-                  sqrt((game.lastCardPlayed.valueToInt() - card.valueToInt()) *
+                  "Tu bois " +
+                      sqrt((game.lastCardPlayed.valueToInt() -
+                                  card.valueToInt()) *
                               (game.lastCardPlayed.valueToInt() -
                                   card.valueToInt()))
                           .toInt()
