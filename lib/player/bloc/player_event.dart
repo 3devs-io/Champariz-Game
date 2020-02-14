@@ -32,3 +32,10 @@ class SelectedNames extends PlayerEvent {
   @override
   List<Object> get props => [playersNames];
 }
+
+class NewGame extends PlayerEvent {
+  const NewGame();
+
+  @override
+  List<Object> get props => [];
+}

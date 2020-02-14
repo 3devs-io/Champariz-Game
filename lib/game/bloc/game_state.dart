@@ -21,6 +21,11 @@ class LoadingGame extends GameState {
   List<Object> get props => [game.actualDeck.cards];
 }
 
+class EndedGame extends GameState {
+  @override
+  List<Object> get props => [];
+}
+
 class GameError extends GameState {
   @override
   List<Object> get props => [];

@@ -1,6 +1,7 @@
 import 'package:champariz_game/game/models/card.dart' as cards;
 import 'package:champariz_game/game/bloc/bloc.dart';
 import 'package:champariz_game/game/models/game.dart';
+import 'package:champariz_game/player/bloc/bloc.dart';
 import 'package:champariz_game/router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -31,6 +32,9 @@ class _GameViewState extends State<GameView> {
         onWillPop: () => Future.value(false),
         child: BlocListener<GameBloc, GameState>(
           listener: (context, state) {
+            if (state is EndedGame) {
+              Navigator.pushNamed(context, HomeRoute);
+            }
             if (state is DrinkingGame) {
               showDialog<void>(
                 context: context,

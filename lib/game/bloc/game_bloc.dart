@@ -35,11 +35,15 @@ class GameBloc extends Bloc<GameEvent, GameState> {
     yield GameError(); //Yield GameError to change the old state, preventing from sending the same state twice
     try {
       bool isFinished = game.actualDeck.cards.length == 1;
+      bool isFinishedAndSupported = false;
       bool last = false;
       if (card.isSeven()) {
         last = true;
         yield DrinkingGame(
             "Tu prends cul sec", [game.currentPlayer], isFinished);
+        isFinished
+            ? isFinishedAndSupported = true
+            : isFinishedAndSupported = false;
       } else {
         if ((game.lastCardPlayed != null)) {
           if (game.lastCardPlayed.pair(card)) {
@@ -48,11 +52,17 @@ class GameBloc extends Bloc<GameEvent, GameState> {
                 "Tu distribue " + card.valueToInt().toString() + " gorgées",
                 [game.currentPlayer],
                 isFinished);
+            isFinished
+                ? isFinishedAndSupported = true
+                : isFinishedAndSupported = false;
           } else {
             if (game.lastCardPlayed.sameFamily(card)) {
               last = true;
               yield DrinkingGame(
                   "Vous buvez tous 3 gorgées ! ", game.playerList, isFinished);
+              isFinished
+                  ? isFinishedAndSupported = true
+                  : isFinishedAndSupported = false;
             } else {
               last = true;
               yield DrinkingGame(
@@ -66,6 +76,9 @@ class GameBloc extends Bloc<GameEvent, GameState> {
                       " gorgées",
                   [game.currentPlayer],
                   isFinished);
+              isFinished
+                  ? isFinishedAndSupported = true
+                  : isFinishedAndSupported = false;
             }
           }
         }
@@ -75,7 +88,9 @@ class GameBloc extends Bloc<GameEvent, GameState> {
         game.nextPlayer();
       }
       game.play(card, last);
-
+      if (isFinished && !isFinishedAndSupported) {
+        yield EndedGame();
+      }
       yield LoadingGame(game);
     } catch (_) {
       print(_);
