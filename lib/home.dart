@@ -47,8 +47,13 @@ class _HomeState extends State<Home> {
                           SizedBox(
                             height: mediaQuery.size.height / 20,
                           ),
-                          FlutterLogo(
-                            size: 250,
+                          CircleAvatar(
+                            backgroundColor: Colors.grey[100],
+                            child: Image(
+                              image: AssetImage('assets/logo.png'),
+                              width: 75.0,
+                            ),
+                            radius: 50.0,
                           ),
                           SizedBox(
                             height: mediaQuery.size.height / 40,
@@ -102,8 +107,13 @@ class _HomeState extends State<Home> {
                           SizedBox(
                             height: mediaQuery.size.height / 10,
                           ),
-                          FlutterLogo(
-                            size: 250,
+                          CircleAvatar(
+                            backgroundColor: Colors.grey[100],
+                            child: Image(
+                              image: AssetImage('assets/logo.png'),
+                              width: 75.0,
+                            ),
+                            radius: 50.0,
                           ),
                           SizedBox(
                             height: mediaQuery.size.height / 30,
