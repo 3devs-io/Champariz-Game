@@ -6,7 +6,7 @@ import './bloc.dart';
 
 class PlayerBloc extends Bloc<PlayerEvent, PlayerState> {
   @override
-  PlayerState get initialState => SelectingNumberPlayers();
+  PlayerBloc() : super(SelectingNumberPlayers());
 
   @override
   Stream<PlayerState> mapEventToState(

@@ -7,7 +7,7 @@ import 'package:champariz_game/game/models/card.dart' as cards;
 
 class GameBloc extends Bloc<GameEvent, GameState> {
   @override
-  GameState get initialState => UnloadedGame();
+  GameBloc() : super(UnloadedGame());
 
   @override
   Stream<GameState> mapEventToState(
