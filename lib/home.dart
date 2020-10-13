@@ -3,7 +3,9 @@ import 'package:champariz_game/player/bloc/bloc.dart';
 import 'package:champariz_game/router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:numberpicker/numberpicker.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class Home extends StatefulWidget {
   Home({Key key}) : super(key: key);
@@ -13,7 +15,6 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  //TODO : Scrollable view to make the actual text to type in visible
   int _currentValue = 5;
   TextEditingController _textEditingController = TextEditingController();
 
@@ -39,7 +40,13 @@ class _HomeState extends State<Home> {
                     state.game.playerList.forEach((name) {
                       names.add(Padding(
                           padding: EdgeInsets.symmetric(horizontal: 16.0),
-                          child: Text(name.getName())));
+                          child: Text(
+                            name.getName(),
+                            style: GoogleFonts.getFont(
+                              'Raleway',
+                              color: Colors.white,
+                            ),
+                          )));
                     });
                     return Center(
                       child: Column(
@@ -60,7 +67,8 @@ class _HomeState extends State<Home> {
                           ),
                           Text(
                             "Entrez le nom des différents joueurs",
-                            style: TextStyle(fontSize: 22.5),
+                            style: GoogleFonts.getFont('Raleway',
+                                color: Colors.white, fontSize: 22.5),
                           ),
                           SizedBox(
                             height: mediaQuery.size.height / 40,
@@ -87,7 +95,9 @@ class _HomeState extends State<Home> {
                               onPressed: () {
                                 _submit();
                               },
-                              child: Text('Submit'),
+                              child: Text(
+                                'Commencer la partie',
+                              ),
                             ),
                           ),
                           Expanded(
@@ -101,66 +111,130 @@ class _HomeState extends State<Home> {
                   }
 
                   if (state is SelectingNumberPlayers) {
-                    return Center(
-                      child: Column(
-                        children: <Widget>[
-                          SizedBox(
-                            height: mediaQuery.size.height / 10,
-                          ),
-                          CircleAvatar(
-                            backgroundColor: Colors.grey[100],
-                            child: Image(
-                              image: AssetImage('assets/logo.png'),
-                              width: 75.0,
+                    return Stack(children: [
+                      Center(
+                        child: Column(
+                          children: <Widget>[
+                            SizedBox(
+                              height: mediaQuery.size.height / 10,
                             ),
-                            radius: 50.0,
-                          ),
-                          SizedBox(
-                            height: mediaQuery.size.height / 30,
-                          ),
-                          Text(
-                            "Jouer à Champariz",
-                            style: TextStyle(fontSize: 22.5),
-                          ),
-                          SizedBox(
-                            height: mediaQuery.size.height / 30,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              Icon(Icons.people),
-                              SizedBox(
-                                width: mediaQuery.size.width / 30,
+                            CircleAvatar(
+                              backgroundColor: Colors.grey[100],
+                              child: Image(
+                                image: AssetImage('assets/logo.png'),
+                                width: 75.0,
                               ),
-                              Text(
-                                "Nombre de joueurs",
-                                style: TextStyle(fontSize: 12.5),
+                              radius: 50.0,
+                            ),
+                            SizedBox(
+                              height: mediaQuery.size.height / 30,
+                            ),
+                            Text(
+                              "Jouer à Champariz",
+                              style: GoogleFonts.getFont('Raleway',
+                                  color: Colors.white, fontSize: 22.5),
+                            ),
+                            SizedBox(
+                              height: mediaQuery.size.height / 30,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Icon(Icons.people),
+                                SizedBox(
+                                  width: mediaQuery.size.width / 30,
+                                ),
+                                Text(
+                                  "Nombre de joueurs",
+                                  style: GoogleFonts.getFont('Raleway',
+                                      color: Colors.white, fontSize: 12.5),
+                                ),
+                              ],
+                            ),
+                            NumberPicker.integer(
+                                initialValue: _currentValue,
+                                minValue: 3,
+                                maxValue: 20,
+                                onChanged: (newValue) =>
+                                    setState(() => _currentValue = newValue)),
+                            RaisedButton(
+                              onPressed: () {
+                                BlocProvider.of<PlayerBloc>(context)
+                                    .add(SelectedNumber(_currentValue));
+                              },
+                              splashColor: Colors.white,
+                              elevation: 8.0,
+                              child: Text(
+                                "Jouer",
+                                style: GoogleFonts.getFont(
+                                  'Raleway',
+                                  color: Colors.white,
+                                ),
                               ),
-                            ],
-                          ),
-                          NumberPicker.integer(
-                              initialValue: _currentValue,
-                              minValue: 3,
-                              maxValue: 20,
-                              onChanged: (newValue) =>
-                                  setState(() => _currentValue = newValue)),
-                          RaisedButton(
-                            onPressed: () {
-                              BlocProvider.of<PlayerBloc>(context)
-                                  .add(SelectedNumber(_currentValue));
-                            },
-                            splashColor: Colors.white,
-                            elevation: 8.0,
-                            child: Text("Jouer"),
-                            color: Theme.of(context).accentColor,
-                            shape: new RoundedRectangleBorder(
-                                borderRadius: new BorderRadius.circular(30.0)),
-                          ),
-                        ],
+                              color: Theme.of(context).accentColor,
+                              shape: new RoundedRectangleBorder(
+                                  borderRadius:
+                                      new BorderRadius.circular(30.0)),
+                            ),
+                          ],
+                        ),
                       ),
-                    );
+                      Positioned(
+                        bottom: 5,
+                        left: 0,
+                        child: Ink(
+                            decoration: const ShapeDecoration(
+                              shape: CircleBorder(),
+                            ),
+                            child: IconButton(
+                              iconSize: 20,
+                              onPressed: () {
+                                showAboutDialog(
+                                    applicationLegalese: 'GPL-3.0 License',
+                                    context: context,
+                                    applicationName: "Champariz",
+                                    applicationVersion: "1.0.0",
+                                    applicationIcon: Image(
+                                        image: AssetImage('assets/logo.png')),
+                                    children: [
+                                      Text(
+                                        "Cette application est développée par ",
+                                        style: GoogleFonts.getFont(
+                                          'Raleway',
+                                        ),
+                                      ),
+                                      GestureDetector(
+                                          onTap: () {
+                                            launch(
+                                                "https://github.com/ReversedHourglass");
+                                          },
+                                          child: Text(
+                                            "Tom Alegre",
+                                            style: GoogleFonts.getFont(
+                                              'Raleway',
+                                              color: Colors.blue,
+                                              decoration:
+                                                  TextDecoration.underline,
+                                            ),
+                                          ))
+                                    ]);
+                              },
+                              icon: const Icon(
+                                Icons.info,
+                                size: 40,
+                                color: Color(0xff4da1a9),
+                              ),
+                            )),
+                      ),
+                    ]);
                   }
-                  return Text('Something went wrong!');
+                  return Text(
+                    'Something went wrong!',
+                    style: GoogleFonts.getFont(
+                      'Raleway',
+                      color: Colors.white,
+                    ),
+                  );
                 })))),
         listener: (context, state) {
           if (state is GameStart) {

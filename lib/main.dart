@@ -22,11 +22,9 @@ class MyApp extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           title: 'Flutter Demo',
           theme: ThemeData(
-              primaryColor: Color(0xff2e5077),
-              accentColor: Color(0xff4da1a9),
-              textTheme: Theme.of(context)
-                  .textTheme
-                  .apply(bodyColor: Colors.white, displayColor: Colors.white)),
+            primaryColor: Color(0xff2e5077),
+            accentColor: Color(0xff4da1a9),
+          ),
           home: Home(),
           initialRoute: HomeRoute,
           onGenerateRoute: generateRoute,

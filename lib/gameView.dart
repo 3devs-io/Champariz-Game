@@ -1,10 +1,10 @@
 import 'package:champariz_game/game/models/card.dart' as cards;
 import 'package:champariz_game/game/bloc/bloc.dart';
 import 'package:champariz_game/game/models/game.dart';
-import 'package:champariz_game/player/bloc/bloc.dart';
 import 'package:champariz_game/router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class GameView extends StatefulWidget {
   GameView({Key key}) : super(key: key);
@@ -45,7 +45,13 @@ class _GameViewState extends State<GameView> {
                     players = player.getName() + " ";
                   });
                   return AlertDialog(
-                    title: Text('Il est temps de boire !'),
+                    title: Text(
+                      'Il est temps de boire !',
+                      style: GoogleFonts.getFont(
+                        'Raleway',
+                        color: Colors.black,
+                      ),
+                    ),
                     content: SingleChildScrollView(
                       child: ListBody(
                         children: <Widget>[
@@ -87,9 +93,15 @@ class _GameViewState extends State<GameView> {
                           child: Column(
                         children: <Widget>[
                           Container(
-                            child: Text("C'est à " +
-                                state.game.currentPlayer.getName() +
-                                " de jouer"),
+                            child: Text(
+                              "C'est à " +
+                                  state.game.currentPlayer.getName() +
+                                  " de jouer",
+                              style: GoogleFonts.getFont(
+                                'Raleway',
+                                color: Colors.white,
+                              ),
+                            ),
                           ),
                           Expanded(
                             child: GridView.count(
@@ -101,7 +113,13 @@ class _GameViewState extends State<GameView> {
                       ))));
             }
 
-            return Text("An error has occured");
+            return Text(
+              "An error has occured",
+              style: GoogleFonts.getFont(
+                'Raleway',
+                color: Colors.white,
+              ),
+            );
           }),
         ));
   }
