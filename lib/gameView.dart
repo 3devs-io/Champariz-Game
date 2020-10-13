@@ -141,8 +141,10 @@ class _WardWState extends State<WardW> {
         return Container(
             child: GestureDetector(
           onDoubleTap: () {
-            BlocProvider.of<GameBloc>(context)
-                .add(CardTappedGame(state.game, widget.card));
+            if (state.game.actualDeck.cards.contains(widget.card)) {
+              BlocProvider.of<GameBloc>(context)
+                  .add(CardTappedGame(state.game, widget.card));
+            }
           },
           child: Padding(
             child: Image.asset(

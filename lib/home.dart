@@ -96,7 +96,7 @@ class _HomeState extends State<Home> {
                                 _submit();
                               },
                               child: Text(
-                                'Commencer la partie',
+                                'Sélectionner',
                               ),
                             ),
                           ),
