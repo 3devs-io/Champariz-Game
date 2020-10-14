@@ -176,6 +176,66 @@ class _HomeState extends State<Home> {
                                   borderRadius:
                                       new BorderRadius.circular(30.0)),
                             ),
+                            RaisedButton(
+                              onPressed: () {
+                                showDialog(
+                                    context: context,
+                                    barrierDismissible: true,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: Text('Règles de Champariz'),
+                                        content: Column(
+                                          children: [
+                                            Text(
+                                                "Same family : All players drink 3 sips"),
+                                            Text(
+                                                "Pair : The player deals a number of sips equivalent to the value of the cards turned over."),
+                                            Text(
+                                                "7 : The player finishes is drink"),
+                                            Text(
+                                                "None of the above : The player drinks a number of sips equivalent to the subtraction of the value of the returned cards"),
+                                          ],
+                                        ),
+                                        actions: <Widget>[
+                                          Material(
+                                            elevation: 5.0,
+                                            borderRadius:
+                                                BorderRadius.circular(30.0),
+                                            color: Color(0xff4da1a9),
+                                            child: MaterialButton(
+                                              minWidth: 50,
+                                              //padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+                                              onPressed: () {
+                                                Navigator.pop(context);
+                                              },
+                                              child: Text(
+                                                "Ok",
+                                                textAlign: TextAlign.center,
+                                                style: GoogleFonts.getFont(
+                                                  'Raleway',
+                                                  color: Colors.white,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      );
+                                    });
+                              },
+                              splashColor: Colors.white,
+                              elevation: 8.0,
+                              child: Text(
+                                "Règles",
+                                style: GoogleFonts.getFont(
+                                  'Raleway',
+                                  color: Colors.white,
+                                ),
+                              ),
+                              color: Theme.of(context).accentColor,
+                              shape: new RoundedRectangleBorder(
+                                  borderRadius:
+                                      new BorderRadius.circular(30.0)),
+                            ),
                           ],
                         ),
                       ),
