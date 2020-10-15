@@ -186,17 +186,18 @@ class _HomeState extends State<Home> {
                                         title: Text('Règles de Champariz'),
                                         content: Column(
                                           mainAxisSize: MainAxisSize.min,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
                                           children: [
                                             Text(
-                                                "Cartes de la même famille : Tous les joueurs boivent 3 gorgées"),
+                                                " - Cartes de la même famille : Tous les joueurs boivent 3 gorgées"),
                                             Text(
-                                                "Paire : Le joueur distribue une quantité de gorgée égale à la valeur des cartes retournées"),
+                                                " - Paire : Le joueur distribue une quantité de gorgée égale à la valeur des cartes retournées"),
                                             Text(
-                                              "7 : cul sec",
-                                              textAlign: TextAlign.left,
+                                              "- 7 : cul sec",
                                             ),
                                             Text(
-                                                "Aucune des règles ci dessus : Le joueur boit une quantité de gorgée égale à la soustraction des valeurs des deux cartes retournées"),
+                                                "- Aucune des règles ci dessus : Le joueur boit une quantité de gorgée égale à la soustraction des valeurs des deux cartes retournées"),
                                           ],
                                         ),
                                         actions: <Widget>[
