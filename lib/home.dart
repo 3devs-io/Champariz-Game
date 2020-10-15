@@ -185,15 +185,18 @@ class _HomeState extends State<Home> {
                                       return AlertDialog(
                                         title: Text('Règles de Champariz'),
                                         content: Column(
+                                          mainAxisSize: MainAxisSize.min,
                                           children: [
                                             Text(
-                                                "Same family : All players drink 3 sips"),
+                                                "Cartes de la même famille : Tous les joueurs boivent 3 gorgées"),
                                             Text(
-                                                "Pair : The player deals a number of sips equivalent to the value of the cards turned over."),
+                                                "Paire : Le joueur distribue une quantité de gorgée égale à la valeur des cartes retournées"),
                                             Text(
-                                                "7 : The player finishes is drink"),
+                                              "7 : cul sec",
+                                              textAlign: TextAlign.left,
+                                            ),
                                             Text(
-                                                "None of the above : The player drinks a number of sips equivalent to the subtraction of the value of the returned cards"),
+                                                "Aucune des règles ci dessus : Le joueur boit une quantité de gorgée égale à la soustraction des valeurs des deux cartes retournées"),
                                           ],
                                         ),
                                         actions: <Widget>[
