@@ -3,6 +3,8 @@ import 'package:champariz_game/player/models/player.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 
+import '../models/game.dart';
+
 @immutable
 abstract class GameState extends Equatable {
   const GameState();
@@ -22,8 +24,10 @@ class LoadingGame extends GameState {
 }
 
 class EndedGame extends GameState {
+  final List<Player> playerList;
+  EndedGame(this.playerList);
   @override
-  List<Object> get props => [];
+  List<Object> get props => [playerList];
 }
 
 class GameError extends GameState {

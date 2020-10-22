@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:math';
 import 'package:bloc/bloc.dart';
 import 'package:champariz_game/game/models/game.dart';
+import '../../player/models/player.dart';
 import './bloc.dart';
 import 'package:champariz_game/game/models/card.dart' as cards;
 
@@ -39,6 +40,7 @@ class GameBloc extends Bloc<GameEvent, GameState> {
       bool last = false;
       if (card.isSeven()) {
         last = true;
+        game.currentPlayer.drinkFinish();
         yield DrinkingGame(game.currentPlayer.getName() + ", prends cul sec",
             [game.currentPlayer], isFinished);
         isFinished
@@ -61,6 +63,9 @@ class GameBloc extends Bloc<GameEvent, GameState> {
           } else {
             if (game.lastCardPlayed.sameFamily(card)) {
               last = true;
+              game.playerList.forEach((element) {
+                element.drink(3);
+              });
               yield DrinkingGame(
                   "Vous buvez tous 3 gorgées ! ", game.playerList, isFinished);
               isFinished
@@ -68,6 +73,10 @@ class GameBloc extends Bloc<GameEvent, GameState> {
                   : isFinishedAndSupported = false;
             } else {
               last = true;
+              game.currentPlayer.drink(sqrt((game.lastCardPlayed.valueToInt() -
+                          card.valueToInt()) *
+                      (game.lastCardPlayed.valueToInt() - card.valueToInt()))
+                  .toInt());
               yield DrinkingGame(
                   game.currentPlayer.getName() +
                       ", bois " +
@@ -93,7 +102,7 @@ class GameBloc extends Bloc<GameEvent, GameState> {
       }
       game.play(card, last);
       if (isFinished && !isFinishedAndSupported) {
-        yield EndedGame();
+        yield EndedGame(game.playerList);
       }
       yield LoadingGame(game);
     } catch (_) {

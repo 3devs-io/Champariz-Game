@@ -5,6 +5,9 @@ import 'package:champariz_game/router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:fl_chart/fl_chart.dart';
+
+import 'game/bloc/game_state.dart';
 
 class GameView extends StatefulWidget {
   GameView({Key key}) : super(key: key);
@@ -31,18 +34,130 @@ class _GameViewState extends State<GameView> {
     return WillPopScope(
         onWillPop: () => Future.value(false),
         child: BlocListener<GameBloc, GameState>(
-          listener: (context, state) {
+          listener: (context, state) async {
             if (state is EndedGame) {
-              Navigator.pushNamed(context, HomeRoute);
-            }
-            if (state is DrinkingGame) {
               showDialog<void>(
                 context: context,
                 builder: (BuildContext context) {
-                  String players;
-                  state.players.forEach((player) {
-                    players = player.getName() + " ";
+                  List<BarChartGroupData> barGroup = [];
+                  int count = 0;
+                  state.playerList.forEach((player) {
+                    barGroup.add(
+                      BarChartGroupData(
+                        x: count,
+                        barRods: [
+                          BarChartRodData(
+                              y: player.getNbGorgees().toDouble(),
+                              colors: [
+                                Colors.lightBlueAccent,
+                                Colors.greenAccent
+                              ])
+                        ],
+                        showingTooltipIndicators: [0],
+                      ),
+                    );
+                    count++;
                   });
+                  return AlertDialog(
+                    title: Text(
+                      'Récapitulatif de partie',
+                      style: GoogleFonts.getFont(
+                        'Raleway',
+                        color: Colors.black,
+                      ),
+                    ),
+                    content: SingleChildScrollView(
+                      child: ListBody(
+                        children: <Widget>[
+                          AspectRatio(
+                            aspectRatio: 1.7,
+                            child: Card(
+                              elevation: 0,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(4)),
+                              color: const Color(0xff2c4260),
+                              child: BarChart(
+                                BarChartData(
+                                  alignment: BarChartAlignment.spaceAround,
+                                  maxY: 20,
+                                  barTouchData: BarTouchData(
+                                    enabled: false,
+                                    touchTooltipData: BarTouchTooltipData(
+                                      tooltipBgColor: Colors.transparent,
+                                      tooltipPadding: const EdgeInsets.all(0),
+                                      tooltipBottomMargin: 8,
+                                      getTooltipItem: (
+                                        BarChartGroupData group,
+                                        int groupIndex,
+                                        BarChartRodData rod,
+                                        int rodIndex,
+                                      ) {
+                                        return BarTooltipItem(
+                                          rod.y.round().toString(),
+                                          TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                  titlesData: FlTitlesData(
+                                    show: true,
+                                    bottomTitles: SideTitles(
+                                      showTitles: true,
+                                      getTextStyles: (value) => const TextStyle(
+                                          color: Color(0xff7589a2),
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 14),
+                                      margin: 20,
+                                      getTitles: (double value) {
+                                        return state.playerList[value.toInt()]
+                                            .getName();
+                                      },
+                                    ),
+                                    leftTitles: SideTitles(showTitles: false),
+                                  ),
+                                  borderData: FlBorderData(
+                                    show: false,
+                                  ),
+                                  barGroups: barGroup,
+                                ),
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                    actions: <Widget>[
+                      Center(
+                        child: RaisedButton(
+                          splashColor: Colors.white,
+                          elevation: 8.0,
+                          child: Text(
+                            "Ok",
+                            style: GoogleFonts.getFont(
+                              'Raleway',
+                              color: Colors.white,
+                            ),
+                          ),
+                          color: Theme.of(context).accentColor,
+                          shape: new RoundedRectangleBorder(
+                              borderRadius: new BorderRadius.circular(30.0)),
+                          onPressed: () {
+                            Navigator.pushNamed(context, HomeRoute);
+                          },
+                        ),
+                      )
+                    ],
+                  );
+                },
+              );
+            }
+            if (state is DrinkingGame) {
+              await showDialog<void>(
+                context: context,
+                builder: (BuildContext context) {
                   return AlertDialog(
                     title: Text(
                       'Il est temps de boire !',
@@ -77,18 +192,138 @@ class _GameViewState extends State<GameView> {
                           shape: new RoundedRectangleBorder(
                               borderRadius: new BorderRadius.circular(30.0)),
                           onPressed: () {
-                            if (state.isFinished) {
-                              Navigator.pushNamed(context, HomeRoute);
-                            } else {
-                              Navigator.of(context).pop();
-                            }
+                            Navigator.of(context).pop();
                           },
                         ),
                       )
                     ],
                   );
                 },
-              );
+              ).then((value) {
+                if (state.isFinished) {
+                  showDialog<void>(
+                    context: context,
+                    builder: (BuildContext context) {
+                      List<BarChartGroupData> barGroup = [];
+                      int count = 0;
+                      state.players.forEach((player) {
+                        barGroup.add(
+                          BarChartGroupData(
+                            x: count,
+                            barRods: [
+                              BarChartRodData(
+                                  y: player.getNbGorgees().toDouble(),
+                                  colors: [
+                                    Colors.lightBlueAccent,
+                                    Colors.greenAccent
+                                  ])
+                            ],
+                            showingTooltipIndicators: [0],
+                          ),
+                        );
+                        count++;
+                      });
+                      return AlertDialog(
+                        title: Text(
+                          'Récapitulatif de partie',
+                          style: GoogleFonts.getFont(
+                            'Raleway',
+                            color: Colors.black,
+                          ),
+                        ),
+                        content: SingleChildScrollView(
+                          child: ListBody(
+                            children: <Widget>[
+                              AspectRatio(
+                                aspectRatio: 1.7,
+                                child: Card(
+                                  elevation: 0,
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(4)),
+                                  color: const Color(0xff2c4260),
+                                  child: BarChart(
+                                    BarChartData(
+                                      alignment: BarChartAlignment.spaceAround,
+                                      maxY: 20,
+                                      barTouchData: BarTouchData(
+                                        enabled: false,
+                                        touchTooltipData: BarTouchTooltipData(
+                                          tooltipBgColor: Colors.transparent,
+                                          tooltipPadding:
+                                              const EdgeInsets.all(0),
+                                          tooltipBottomMargin: 8,
+                                          getTooltipItem: (
+                                            BarChartGroupData group,
+                                            int groupIndex,
+                                            BarChartRodData rod,
+                                            int rodIndex,
+                                          ) {
+                                            return BarTooltipItem(
+                                              rod.y.round().toString(),
+                                              TextStyle(
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            );
+                                          },
+                                        ),
+                                      ),
+                                      titlesData: FlTitlesData(
+                                        show: true,
+                                        bottomTitles: SideTitles(
+                                          showTitles: true,
+                                          getTextStyles: (value) =>
+                                              const TextStyle(
+                                                  color: Color(0xff7589a2),
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 14),
+                                          margin: 20,
+                                          getTitles: (double value) {
+                                            return state.players[value.toInt()]
+                                                .getName();
+                                          },
+                                        ),
+                                        leftTitles:
+                                            SideTitles(showTitles: false),
+                                      ),
+                                      borderData: FlBorderData(
+                                        show: false,
+                                      ),
+                                      barGroups: barGroup,
+                                    ),
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                        actions: <Widget>[
+                          Center(
+                            child: RaisedButton(
+                              splashColor: Colors.white,
+                              elevation: 8.0,
+                              child: Text(
+                                "Ok",
+                                style: GoogleFonts.getFont(
+                                  'Raleway',
+                                  color: Colors.white,
+                                ),
+                              ),
+                              color: Theme.of(context).accentColor,
+                              shape: new RoundedRectangleBorder(
+                                  borderRadius:
+                                      new BorderRadius.circular(30.0)),
+                              onPressed: () {
+                                Navigator.pushNamed(context, HomeRoute);
+                              },
+                            ),
+                          )
+                        ],
+                      );
+                    },
+                  );
+                }
+              });
             }
           },
           child: BlocBuilder<GameBloc, GameState>(builder: (context, state) {
