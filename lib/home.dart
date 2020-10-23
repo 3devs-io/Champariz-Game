@@ -282,10 +282,10 @@ class _HomeState extends State<Home> {
                                       GestureDetector(
                                           onTap: () {
                                             launch(
-                                                "https://github.com/ReversedHourglass");
+                                                "https://github.com/3devs-io");
                                           },
                                           child: Text(
-                                            "Tom Alegre",
+                                            "3devs.io",
                                             style: GoogleFonts.getFont(
                                               'Raleway',
                                               color: Colors.blue,
