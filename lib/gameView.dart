@@ -28,6 +28,7 @@ class _GameViewState extends State<GameView> {
 
   @override
   Widget build(BuildContext context) {
+    final ScrollController _scrollController = ScrollController();
     return WillPopScope(
         onWillPop: () => Future.value(false),
         child: BlocListener<GameBloc, GameState>(
@@ -100,22 +101,42 @@ class _GameViewState extends State<GameView> {
                           child: Column(
                         children: <Widget>[
                           Container(
-                            child: Text(
-                              "C'est à " +
-                                  state.game.currentPlayer.getName() +
-                                  " de jouer",
-                              style: GoogleFonts.getFont(
-                                'Raleway',
-                                color: Colors.white,
-                              ),
-                            ),
-                          ),
+                              height: MediaQuery.of(context).size.width / 7,
+                              child: Center(
+                                child: RichText(
+                                  text: TextSpan(
+                                      text: "C'est à ",
+                                      style: GoogleFonts.getFont('Raleway',
+                                          color: Colors.white, fontSize: 22),
+                                      children: [
+                                        TextSpan(
+                                          text: state.game.currentPlayer
+                                              .getName(),
+                                          style: GoogleFonts.getFont('Raleway',
+                                              color: Colors.white,
+                                              fontSize: 24,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        TextSpan(
+                                          text: " de jouer",
+                                          style: GoogleFonts.getFont('Raleway',
+                                              color: Colors.white,
+                                              fontSize: 22),
+                                        )
+                                      ]),
+                                ),
+                              )),
                           Expanded(
+                              child: Scrollbar(
+                            isAlwaysShown: true,
+                            controller: _scrollController,
+                            thickness: 5,
                             child: GridView.count(
+                              controller: _scrollController,
                               crossAxisCount: 5,
                               children: cards(state.game),
                             ),
-                          ),
+                          )),
                         ],
                       ))));
             }
