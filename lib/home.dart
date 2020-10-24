@@ -27,6 +27,8 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
+    String _inputName;
+    final _formKey = GlobalKey<FormState>();
     return BlocListener<PlayerBloc, PlayerState>(
         child: WillPopScope(
             onWillPop: () => Future.value(false),
@@ -75,25 +77,35 @@ class _HomeState extends State<Home> {
                           ),
                           Padding(
                             padding: EdgeInsets.symmetric(horizontal: 16.0),
-                            child: TextField(
-                              controller: _textEditingController,
-                              onSubmitted: (String submitted) {
-                                _submit();
-                              },
-                              textInputAction: TextInputAction.send,
-                              decoration: InputDecoration.collapsed(
-                                hintText: "Entrez un nom",
-                                hintStyle: TextStyle(color: Colors.white),
+                            child: Form(
+                              key: _formKey,
+                              child: TextFormField(
+                                controller: _textEditingController,
+                                onSaved: (String submitted) {
+                                  _inputName = submitted;
+                                },
+                                validator: (submitted) {
+                                  return submitted.isEmpty
+                                      ? 'Veuillez rentrer un prénom'
+                                      : null;
+                                },
+                                textInputAction: TextInputAction.send,
+                                decoration: InputDecoration.collapsed(
+                                  hintText: "Entrez un nom",
+                                  hintStyle: TextStyle(color: Colors.white),
+                                ),
+                                style: TextStyle(color: Colors.white),
+                                maxLines: 1,
                               ),
-                              style: TextStyle(color: Colors.white),
-                              maxLines: 1,
                             ),
                           ),
                           Padding(
                             padding: EdgeInsets.symmetric(vertical: 16.0),
                             child: RaisedButton(
                               onPressed: () {
-                                _submit();
+                                if (_formKey.currentState.validate()) {
+                                  _submit();
+                                }
                               },
                               child: Text(
                                 'Sélectionner',
