@@ -55,10 +55,6 @@ class _GameViewState extends State<GameView> {
                       child: ListBody(
                         children: <Widget>[
                           Text(
-                            "Joueur(s) : " + players,
-                            style: TextStyle(color: Colors.black),
-                          ),
-                          Text(
                             state.toDrink,
                             style: TextStyle(color: Colors.black),
                           ),
@@ -66,17 +62,29 @@ class _GameViewState extends State<GameView> {
                       ),
                     ),
                     actions: <Widget>[
-                      FlatButton(
-                        child: Text(
-                            'Regretter de jouer à des jeux d\'alcool et boire pour oublier'),
-                        onPressed: () {
-                          if (state.isFinished) {
-                            Navigator.pushNamed(context, HomeRoute);
-                          } else {
-                            Navigator.of(context).pop();
-                          }
-                        },
-                      ),
+                      Center(
+                        child: RaisedButton(
+                          splashColor: Colors.white,
+                          elevation: 8.0,
+                          child: Text(
+                            "Ok",
+                            style: GoogleFonts.getFont(
+                              'Raleway',
+                              color: Colors.white,
+                            ),
+                          ),
+                          color: Theme.of(context).accentColor,
+                          shape: new RoundedRectangleBorder(
+                              borderRadius: new BorderRadius.circular(30.0)),
+                          onPressed: () {
+                            if (state.isFinished) {
+                              Navigator.pushNamed(context, HomeRoute);
+                            } else {
+                              Navigator.of(context).pop();
+                            }
+                          },
+                        ),
+                      )
                     ],
                   );
                 },

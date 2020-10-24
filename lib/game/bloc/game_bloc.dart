@@ -39,8 +39,8 @@ class GameBloc extends Bloc<GameEvent, GameState> {
       bool last = false;
       if (card.isSeven()) {
         last = true;
-        yield DrinkingGame(
-            "Tu prends cul sec", [game.currentPlayer], isFinished);
+        yield DrinkingGame(game.currentPlayer.getName() + ", prends cul sec",
+            [game.currentPlayer], isFinished);
         isFinished
             ? isFinishedAndSupported = true
             : isFinishedAndSupported = false;
@@ -49,7 +49,10 @@ class GameBloc extends Bloc<GameEvent, GameState> {
           if (game.lastCardPlayed.pair(card)) {
             last = true;
             yield DrinkingGame(
-                "Tu distribue " + card.valueToInt().toString() + " gorgées",
+                game.currentPlayer.getName() +
+                    ", distribue " +
+                    card.valueToInt().toString() +
+                    " gorgées",
                 [game.currentPlayer],
                 isFinished);
             isFinished
@@ -66,7 +69,8 @@ class GameBloc extends Bloc<GameEvent, GameState> {
             } else {
               last = true;
               yield DrinkingGame(
-                  "Tu bois " +
+                  game.currentPlayer.getName() +
+                      ", bois " +
                       sqrt((game.lastCardPlayed.valueToInt() -
                                   card.valueToInt()) *
                               (game.lastCardPlayed.valueToInt() -
