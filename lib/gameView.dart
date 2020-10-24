@@ -38,7 +38,6 @@ class _GameViewState extends State<GameView> {
             if (state is DrinkingGame) {
               showDialog<void>(
                 context: context,
-                barrierDismissible: false, // user must tap button!
                 builder: (BuildContext context) {
                   String players;
                   state.players.forEach((player) {
