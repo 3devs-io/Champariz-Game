@@ -27,7 +27,6 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
-    String _inputName;
     final _formKey = GlobalKey<FormState>();
     return BlocListener<PlayerBloc, PlayerState>(
         child: WillPopScope(
@@ -81,9 +80,6 @@ class _HomeState extends State<Home> {
                               key: _formKey,
                               child: TextFormField(
                                 controller: _textEditingController,
-                                onSaved: (String submitted) {
-                                  _inputName = submitted;
-                                },
                                 validator: (submitted) {
                                   return submitted.isEmpty
                                       ? 'Veuillez rentrer un prénom'

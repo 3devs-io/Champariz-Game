@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:math';
 import 'package:bloc/bloc.dart';
 import 'package:champariz_game/game/models/game.dart';
-import '../../player/models/player.dart';
 import './bloc.dart';
 import 'package:champariz_game/game/models/card.dart' as cards;
 
