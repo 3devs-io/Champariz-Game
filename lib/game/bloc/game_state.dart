@@ -35,13 +35,48 @@ class GameError extends GameState {
   List<Object> get props => [];
 }
 
-class DrinkingGame extends GameState {
-  final String toDrink;
+class GiveDrinkState extends GameState {
   final List<Player> players;
-  final bool isFinished;
+  final Player player;
+  final int sips;
 
-  const DrinkingGame(this.toDrink, this.players, this.isFinished);
+  const GiveDrinkState(this.players, this.player, this.sips);
 
   @override
-  List<Object> get props => [toDrink, players, isFinished];
+  List<Object> get props => [players, player, sips];
+}
+
+class FinishDrinkState extends GameState {
+  final Player player;
+
+  const FinishDrinkState(this.player);
+
+  @override
+  List<Object> get props => [player];
+}
+
+class EveryoneDrinkState extends GameState {
+  const EveryoneDrinkState();
+
+  @override
+  List<Object> get props => [];
+}
+
+class SoloDrinkState extends GameState {
+  final Player player;
+  final int sips;
+  const SoloDrinkState(this.player, this.sips);
+
+  @override
+  List<Object> get props => [player, sips];
+}
+
+class DrinkingGame extends GameState {
+  final Player player;
+  final bool isFinished;
+
+  const DrinkingGame(this.player, this.isFinished);
+
+  @override
+  List<Object> get props => [player, isFinished];
 }

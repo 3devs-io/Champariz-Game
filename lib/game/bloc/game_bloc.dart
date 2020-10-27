@@ -39,9 +39,10 @@ class GameBloc extends Bloc<GameEvent, GameState> {
       bool last = false;
       if (card.isSeven()) {
         last = true;
-        game.currentPlayer.drinkFinish();
-        yield DrinkingGame(game.currentPlayer.getName() + ", prends cul sec",
-            [game.currentPlayer], isFinished);
+        game.currentPlayer.drink(10);
+        yield FinishDrinkState(game.currentPlayer);
+        yield DrinkingGame(game.currentPlayer,
+            isFinished); //game.currentPlayer.getName() + ", prends cul sec",
         isFinished
             ? isFinishedAndSupported = true
             : isFinishedAndSupported = false;
@@ -49,45 +50,44 @@ class GameBloc extends Bloc<GameEvent, GameState> {
         if ((game.lastCardPlayed != null)) {
           if (game.lastCardPlayed.pair(card)) {
             last = true;
-            yield DrinkingGame(
-                game.currentPlayer.getName() +
+            yield GiveDrinkState(
+                game.playerList, game.currentPlayer, card.valueToInt());
+            game.nextPlayer();
+            yield DrinkingGame(game.currentPlayer, isFinished);
+            /*  game.currentPlayer.getName() +
                     ", distribue " +
                     card.valueToInt().toString() +
-                    " gorgées",
-                [game.currentPlayer],
-                isFinished);
+                    " gorgées",*/
             isFinished
                 ? isFinishedAndSupported = true
                 : isFinishedAndSupported = false;
           } else {
             if (game.lastCardPlayed.sameFamily(card)) {
               last = true;
+              yield EveryoneDrinkState();
               game.playerList.forEach((element) {
                 element.drink(3);
               });
-              yield DrinkingGame(
-                  "Vous buvez tous 3 gorgées ! ", game.playerList, isFinished);
+              game.nextPlayer();
+              /* "Vous buvez tous 3 gorgées ! "*/
+              yield DrinkingGame(game.currentPlayer, isFinished);
               isFinished
                   ? isFinishedAndSupported = true
                   : isFinishedAndSupported = false;
             } else {
               last = true;
+              yield SoloDrinkState(
+                  game.currentPlayer,
+                  sqrt((game.lastCardPlayed.valueToInt() - card.valueToInt()) *
+                          (game.lastCardPlayed.valueToInt() -
+                              card.valueToInt()))
+                      .toInt());
               game.currentPlayer.drink(sqrt((game.lastCardPlayed.valueToInt() -
                           card.valueToInt()) *
                       (game.lastCardPlayed.valueToInt() - card.valueToInt()))
                   .toInt());
-              yield DrinkingGame(
-                  game.currentPlayer.getName() +
-                      ", bois " +
-                      sqrt((game.lastCardPlayed.valueToInt() -
-                                  card.valueToInt()) *
-                              (game.lastCardPlayed.valueToInt() -
-                                  card.valueToInt()))
-                          .toInt()
-                          .toString() +
-                      " gorgées",
-                  [game.currentPlayer],
-                  isFinished);
+              game.nextPlayer();
+              yield DrinkingGame(game.currentPlayer, isFinished);
               isFinished
                   ? isFinishedAndSupported = true
                   : isFinishedAndSupported = false;
@@ -96,9 +96,6 @@ class GameBloc extends Bloc<GameEvent, GameState> {
         }
       }
 
-      if (last) {
-        game.nextPlayer();
-      }
       game.play(card, last);
       if (isFinished && !isFinishedAndSupported) {
         yield EndedGame(game.playerList);
