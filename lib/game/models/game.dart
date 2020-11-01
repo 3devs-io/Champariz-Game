@@ -7,13 +7,15 @@ class Game {
   int numberOfPlayers;
   List<Player> playerList;
   Deck deck;
+  Deck fulldeck;
   Player currentPlayer;
-  Deck actualDeck;
+
   cards.Card lastCardPlayed;
 
   Game(this.numberOfPlayers) {
     playerList = [];
     deck = Deck();
+    fulldeck = Deck();
   }
 
   void addPlayer(Player playerToAdd) {

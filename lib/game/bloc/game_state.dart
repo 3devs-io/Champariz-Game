@@ -16,11 +16,11 @@ class UnloadedGame extends GameState {
 class PlayingState extends GameState {
   final Player actualPlayer;
   final List<Card> deck;
-
-  const PlayingState(this.actualPlayer, this.deck);
+  final List<Card> fullDeck;
+  const PlayingState(this.actualPlayer, this.deck, this.fullDeck);
 
   @override
-  List<Object> get props => [actualPlayer, deck];
+  List<Object> get props => [actualPlayer, deck, fullDeck];
 }
 
 class DrinkState extends GameState {

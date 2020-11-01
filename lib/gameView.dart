@@ -39,7 +39,49 @@ class _GameViewState extends State<GameView> {
               await showDialog<void>(
                 context: context,
                 builder: (BuildContext context) {
-                  return const PersonalAlertDialog();
+                  return PersonalAlertDialog(
+                    widgetList: [
+                      Text(
+                          "${state.actualPlayer.getName()} tu bois ${state.sips.toString()} gorgées !")
+                    ],
+                    callback: () {
+                      BlocProvider.of<GameBloc>(context)
+                          .add(DrankEvent([state.actualPlayer], state.sips));
+                    },
+                  );
+                },
+              );
+            }
+            if (state is FinishDrinkState) {
+              await showDialog<void>(
+                context: context,
+                builder: (BuildContext context) {
+                  return PersonalAlertDialog(
+                    widgetList: [
+                      Text("${state.actualPlayer.getName()} tu bois cul sec !")
+                    ],
+                    callback: () {
+                      BlocProvider.of<GameBloc>(context)
+                          .add(DrankEvent([state.actualPlayer], 10));
+                    },
+                  );
+                },
+              );
+            }
+            if (state is GiveDrinkState) {
+              await showDialog<void>(
+                context: context,
+                builder: (BuildContext context) {
+                  return PersonalAlertDialog(
+                    widgetList: [
+                      Text(
+                          "${state.actualPlayer.getName()} tu distribues ${state.sips.toString()} gorgées !")
+                    ],
+                    callback: () {
+                      BlocProvider.of<GameBloc>(context)
+                          .add(GaveDrinkEvent(state.actualPlayer, state.sips));
+                    },
+                  );
                 },
               );
             }
@@ -83,7 +125,7 @@ class _GameViewState extends State<GameView> {
                         child: GridView.count(
                           controller: _scrollController,
                           crossAxisCount: 5,
-                          children: generateCards(state.deck),
+                          children: generateCards(state.fullDeck),
                         ),
                       )),
                     ],
@@ -130,7 +172,12 @@ class CardW extends StatelessWidget {
 }
 
 class PersonalAlertDialog extends StatelessWidget {
-  const PersonalAlertDialog({Key key}) : super(key: key);
+  final List<Widget> widgetList;
+  final void Function() callback;
+
+  const PersonalAlertDialog(
+      {Key key, @required this.widgetList, @required this.callback})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -143,14 +190,7 @@ class PersonalAlertDialog extends StatelessWidget {
         ),
       ),
       content: SingleChildScrollView(
-        child: ListBody(
-          children: <Widget>[
-            Text(
-              "TEST",
-              style: TextStyle(color: Colors.black),
-            ),
-          ],
-        ),
+        child: ListBody(children: widgetList),
       ),
       actions: <Widget>[
         Center(
@@ -162,6 +202,7 @@ class PersonalAlertDialog extends StatelessWidget {
                 borderRadius: BorderRadius.circular(30.0)),
             onPressed: () {
               Navigator.of(context).pop();
+              callback();
             },
             child: Text(
               "Ok",

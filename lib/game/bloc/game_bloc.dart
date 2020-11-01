@@ -33,7 +33,8 @@ class GameBloc extends Bloc<GameEvent, GameState> {
   Stream<GameState> _mapInit(Game game) async* {
     this.game = game;
     game.initGame();
-    yield PlayingState(game.currentPlayer, game.deck.getCards());
+    yield PlayingState(
+        game.currentPlayer, game.deck.getCards(), game.fulldeck.getCards());
   }
 
   Stream<GameState> _cardReveal(Card card) async* {
@@ -62,7 +63,8 @@ class GameBloc extends Bloc<GameEvent, GameState> {
     }
     game.play(card);
     if (shouldYieldAfterPlay) {
-      yield PlayingState(game.currentPlayer, game.deck.getCards());
+      yield PlayingState(
+          game.currentPlayer, game.deck.getCards(), game.fulldeck.getCards());
     }
   }
 
@@ -77,7 +79,8 @@ class GameBloc extends Bloc<GameEvent, GameState> {
     if (game.isGameEnded()) {
       yield StatsState(List.from(game.playerList));
     } else {
-      yield PlayingState(game.currentPlayer, game.deck.getCards());
+      yield PlayingState(
+          game.currentPlayer, game.deck.getCards(), game.fulldeck.getCards());
     }
   }
 
