@@ -35,7 +35,6 @@ class PlayerBloc extends Bloc<PlayerEvent, PlayerState> {
 
   Stream<PlayerState> _newGame() async* {
     yield PlayerError();
-    print("NEW GAME");
     try {
       yield SelectingNumberPlayers();
     } catch (_) {

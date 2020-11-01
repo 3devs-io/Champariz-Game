@@ -11,33 +11,33 @@ class Game {
   cards.Card lastCardPlayed;
 
   Game(int numberOfPlayers) {
-    this.numberOfPlayers = numberOfPlayers;
-    this.playerList = List<Player>();
-    this.deck = Deck();
-    this.actualDeck = Deck.fromCards(this.deck.cards);
+    numberOfPlayers = numberOfPlayers;
+    playerList = [];
+    deck = Deck();
+    actualDeck = Deck.fromCards(deck.cards);
   }
 
-  addPlayer(Player playerToAdd) {
-    this.playerList.add(playerToAdd);
+  void addPlayer(Player playerToAdd) {
+    playerList.add(playerToAdd);
   }
 
-  initGame() {
+  void initGame() {
     currentPlayer = playerList[0]; //Setting up first player
     deck.cards.shuffle(); //Randomizing cards
   }
 
-  nextPlayer() {
-    int index = this.playerList.indexOf(this.currentPlayer);
-    if (index == this.playerList.length - 1) {
-      this.currentPlayer = this.playerList[0];
+  void nextPlayer() {
+    final int index = playerList.indexOf(currentPlayer);
+    if (index == playerList.length - 1) {
+      currentPlayer = playerList[0];
     } else {
-      this.currentPlayer = this.playerList[index + 1];
+      currentPlayer = playerList[index + 1];
     }
   }
 
-  play(cards.Card cardToRemove, bool last) {
+  void play(cards.Card cardToRemove, {bool rememberLastCard}) {
     actualDeck.cards.remove(cardToRemove);
-    if (last) {
+    if (rememberLastCard) {
       lastCardPlayed = null;
     } else {
       lastCardPlayed = cardToRemove;

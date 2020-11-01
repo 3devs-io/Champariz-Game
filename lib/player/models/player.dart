@@ -3,8 +3,8 @@ class Player {
   int _nbGorgees;
 
   Player(String nom) {
-    this._nom = nom;
-    this._nbGorgees = 0;
+    _nom = nom;
+    _nbGorgees = 0;
   }
 
   String getName() {
