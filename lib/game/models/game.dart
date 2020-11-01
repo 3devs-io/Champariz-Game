@@ -1,7 +1,6 @@
 import 'package:champariz_game/game/models/card.dart';
 import 'package:champariz_game/player/models/player.dart';
 import 'package:champariz_game/game/models/card.dart' as cards;
-import 'package:flutter/widgets.dart';
 
 class Game {
   int numberOfPlayers;

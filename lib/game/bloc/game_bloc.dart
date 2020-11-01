@@ -44,10 +44,11 @@ class GameBloc extends Bloc<GameEvent, GameState> {
     } else {
       if (game.isLastCardNotNull()) {
         if (game.lastCardPlayed.pair(card)) {
-          yield GiveDrinkState(game.currentPlayer, card.valueToInt());
+          yield GiveDrinkState(List.from(game.playerList), game.currentPlayer,
+              card.valueToInt());
         } else {
           if (game.lastCardPlayed.sameFamily(card)) {
-            yield EveryoneDrinkState(List.from(game.playerList));
+            yield EveryoneDrinkState(List.from(game.playerList), 3);
           } else {
             yield DrinkState(
                 game.currentPlayer,

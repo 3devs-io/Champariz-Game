@@ -1,6 +1,7 @@
 import 'package:champariz_game/game/models/card.dart' as cards;
 import 'package:champariz_game/game/bloc/bloc.dart';
 import 'package:champariz_game/game/models/game.dart';
+import 'package:champariz_game/player/models/player.dart';
 import 'package:champariz_game/router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -68,18 +69,58 @@ class _GameViewState extends State<GameView> {
                 },
               );
             }
-            if (state is GiveDrinkState) {
+            if (state is EveryoneDrinkState) {
               await showDialog<void>(
                 context: context,
                 builder: (BuildContext context) {
                   return PersonalAlertDialog(
                     widgetList: [
                       Text(
-                          "${state.actualPlayer.getName()} tu distribues ${state.sips.toString()} gorgées !")
+                          "Tout le monde boit ${state.sips.toString()} gorgées !")
                     ],
                     callback: () {
                       BlocProvider.of<GameBloc>(context)
-                          .add(GaveDrinkEvent(state.actualPlayer, state.sips));
+                          .add(DrankEvent(state.playersList, state.sips));
+                    },
+                  );
+                },
+              );
+            }
+            if (state is GiveDrinkState) {
+              await showDialog<void>(
+                context: context,
+                builder: (BuildContext context) {
+                  Player dropdownValue;
+                  return PersonalAlertDialog(
+                    widgetList: [
+                      Text(
+                          "${state.actualPlayer.getName()} tu distribues ${state.sips.toString()} gorgées !"),
+                      DropdownButton<Player>(
+                        value: dropdownValue,
+                        icon: const Icon(Icons.arrow_downward),
+                        elevation: 16,
+                        style: const TextStyle(color: Color(0xff4da1a9)),
+                        underline: Container(
+                          height: 2,
+                          color: const Color(0xff4da1a9),
+                        ),
+                        onChanged: (Player newValue) {
+                          setState(() {
+                            dropdownValue = newValue;
+                          });
+                        },
+                        items: state.playersList
+                            .map<DropdownMenuItem<Player>>((Player value) {
+                          return DropdownMenuItem<Player>(
+                            value: value,
+                            child: Text(value.getName()),
+                          );
+                        }).toList(),
+                      )
+                    ],
+                    callback: () {
+                      BlocProvider.of<GameBloc>(context)
+                          .add(GaveDrinkEvent(dropdownValue, state.sips));
                     },
                   );
                 },
