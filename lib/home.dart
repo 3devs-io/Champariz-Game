@@ -34,7 +34,7 @@ class _HomeState extends State<Home> {
           BlocProvider.of<GameBloc>(context).add(GameLoading(state.game));
           BlocProvider.of<PlayerBloc>(context).add(const NewGame());
 
-          Navigator.pushNamed(context, GameViewRoute);
+          Navigator.pushNamed(context, gameViewRoute);
         }
       },
       child: WillPopScope(

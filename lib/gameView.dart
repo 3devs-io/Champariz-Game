@@ -146,7 +146,7 @@ class _GameViewState extends State<GameView> {
                           shape: new RoundedRectangleBorder(
                               borderRadius: new BorderRadius.circular(30.0)),
                           onPressed: () {
-                            Navigator.pushNamed(context, HomeRoute);
+                            Navigator.pushNamed(context, homeRoute);
                           },
                         ),
                       )
@@ -315,7 +315,7 @@ class _GameViewState extends State<GameView> {
                                   borderRadius:
                                       new BorderRadius.circular(30.0)),
                               onPressed: () {
-                                Navigator.pushNamed(context, HomeRoute);
+                                Navigator.pushNamed(context, homeRoute);
                               },
                             ),
                           )

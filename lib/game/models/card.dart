@@ -87,20 +87,15 @@ class Card extends Equatable {
 }
 
 class Deck {
-  List<Card> cards = List<Card>();
-
-  Deck.fromCards(List<Card> test) {
-    cards = List<Card>.from(test);
-  }
+  List<Card> cards = [];
 
   Deck() {
-    List<String> listeFamille = List<String>();
+    final List<String> listeFamille = [];
     listeFamille.add("clubs");
     listeFamille.add("diamonds");
     listeFamille.add("hearts");
     listeFamille.add("spades");
-
-    listeFamille.forEach((String family) {
+    for (final String family in listeFamille) {
       cards.add(Card(
           imagePath: "assets/ace_of_$family.png",
           value: "ace",
@@ -135,8 +130,12 @@ class Deck {
           imagePath: "assets/king_of_$family.png",
           value: "king",
           family: family));
-    });
+    }
 
     cards.shuffle();
+  }
+
+  Deck.fromCards(List<Card> test) {
+    cards = List<Card>.from(test);
   }
 }

@@ -20,13 +20,13 @@ class MyApp extends StatelessWidget {
         ],
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
-          title: 'Flutter Demo',
+          title: 'Champariz',
           theme: ThemeData(
-            primaryColor: Color(0xff2e5077),
-            accentColor: Color(0xff4da1a9),
+            primaryColor: const Color(0xff2e5077),
+            accentColor: const Color(0xff4da1a9),
           ),
-          home: Home(),
-          initialRoute: HomeRoute,
+          home: const Home(),
+          initialRoute: homeRoute,
           onGenerateRoute: generateRoute,
         ));
   }

@@ -2,8 +2,8 @@ import 'dart:async';
 import 'dart:math';
 import 'package:bloc/bloc.dart';
 import 'package:champariz_game/game/models/game.dart';
-import './bloc.dart';
 import 'package:champariz_game/game/models/card.dart' as cards;
+import './bloc.dart';
 
 class GameBloc extends Bloc<GameEvent, GameState> {
   @override
@@ -39,7 +39,7 @@ class GameBloc extends Bloc<GameEvent, GameState> {
       bool last = false;
       if (card.isSeven()) {
         last = true;
-        game.currentPlayer.drinkFinish();
+
         yield DrinkingGame(game.currentPlayer.getName() + ", prends cul sec",
             [game.currentPlayer], isFinished);
         isFinished
@@ -99,7 +99,7 @@ class GameBloc extends Bloc<GameEvent, GameState> {
       if (last) {
         game.nextPlayer();
       }
-      game.play(card, last);
+      game.play(card, rememberLastCard: last);
       if (isFinished && !isFinishedAndSupported) {
         yield EndedGame(game.playerList);
       }
