@@ -31,7 +31,7 @@ class _HomeState extends State<Home> {
     return BlocListener<PlayerBloc, PlayerState>(
       listener: (context, state) {
         if (state is GameStart) {
-          BlocProvider.of<GameBloc>(context).add(GameLoading(state.game));
+          BlocProvider.of<GameBloc>(context).add(LoadGameEvent(state.game));
           BlocProvider.of<PlayerBloc>(context).add(const NewGame());
 
           Navigator.pushNamed(context, gameViewRoute);

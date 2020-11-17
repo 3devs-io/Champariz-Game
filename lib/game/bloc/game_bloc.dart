@@ -13,7 +13,7 @@ class GameBloc extends Bloc<GameEvent, GameState> {
   Stream<GameState> mapEventToState(
     GameEvent event,
   ) async* {
-    if (event is GameLoading) {
+    if (event is LoadGameEvent) {
       yield* _mapInit(event.game);
     }
     if (event is CardTappedGame) {

@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
         providers: [
           BlocProvider<GameBloc>(
-            create: (context) => GameBloc()..add(LoadGame()),
+            create: (context) => GameBloc(),
           ),
           BlocProvider<PlayerBloc>(create: (context) => PlayerBloc()),
         ],

@@ -15,33 +15,37 @@ class UnloadedGame extends GameState {
   List<Object> get props => [];
 }
 
-class LoadingGame extends GameState {
-  final Game game;
+class PlayingState extends GameState {
+  const PlayingState();
 
-  const LoadingGame(this.game);
-  @override
-  List<Object> get props => [game.actualDeck.cards];
-}
-
-class EndedGame extends GameState {
-  final List<Player> playerList;
-  EndedGame(this.playerList);
-  @override
-  List<Object> get props => [playerList];
-}
-
-class GameError extends GameState {
   @override
   List<Object> get props => [];
 }
 
-class DrinkingGame extends GameState {
-  final String toDrink;
-  final List<Player> players;
-  final bool isFinished;
-
-  const DrinkingGame(this.toDrink, this.players, this.isFinished);
+class DrinkState extends GameState {
+  const DrinkState();
 
   @override
-  List<Object> get props => [toDrink, players, isFinished];
+  List<Object> get props => [];
+}
+
+class GiveDrinkState extends GameState {
+  const GiveDrinkState();
+
+  @override
+  List<Object> get props => [];
+}
+
+class StatsState extends GameState {
+  const StatsState();
+
+  @override
+  List<Object> get props => [];
+}
+
+class EndState extends GameState {
+  const EndState();
+
+  @override
+  List<Object> get props => [];
 }

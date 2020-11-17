@@ -8,26 +8,39 @@ abstract class GameEvent extends Equatable {
   const GameEvent();
 }
 
-class GameLoading extends GameEvent {
+class LoadGameEvent extends GameEvent {
   final Game game;
 
-  const GameLoading(this.game);
+  const LoadGameEvent(this.game);
 
   @override
   List<Object> get props => [game];
 }
 
-class CardTappedGame extends GameEvent {
-  final Game game;
+class CardRevealEvent extends GameEvent {
   final cards.Card tapped;
 
-  const CardTappedGame(this.game, this.tapped);
+  const CardRevealEvent(this.tapped);
 
   @override
-  List<Object> get props => [game, tapped];
+  List<Object> get props => [tapped];
 }
 
-class LoadGame extends GameEvent {
+class DrankEvent extends GameEvent {
+  const DrankEvent();
+
+  @override
+  List<Object> get props => [];
+}
+
+class GaveDrinkEvent extends GameEvent {
+  const GaveDrinkEvent();
+  @override
+  List<Object> get props => [];
+}
+
+class StatsSeenEvent extends GameEvent {
+  const StatsSeenEvent();
   @override
   List<Object> get props => [];
 }
