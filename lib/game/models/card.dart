@@ -87,7 +87,7 @@ class Card extends Equatable {
 }
 
 class Deck {
-  List<Card> cards = [];
+  List<Card> _cards = [];
 
   Deck() {
     final List<String> listeFamille = [];
@@ -96,46 +96,58 @@ class Deck {
     listeFamille.add("hearts");
     listeFamille.add("spades");
     for (final String family in listeFamille) {
-      cards.add(Card(
+      _cards.add(Card(
           imagePath: "assets/ace_of_$family.png",
           value: "ace",
           family: family));
-      cards.add(Card(
+      _cards.add(Card(
           imagePath: "assets/2_of_$family.png", value: "2", family: family));
-      cards.add(Card(
+      _cards.add(Card(
           imagePath: "assets/3_of_$family.png", value: "3", family: family));
-      cards.add(Card(
+      _cards.add(Card(
           imagePath: "assets/4_of_$family.png", value: "4", family: family));
-      cards.add(Card(
+      _cards.add(Card(
           imagePath: "assets/5_of_$family.png", value: "5", family: family));
-      cards.add(Card(
+      _cards.add(Card(
           imagePath: "assets/6_of_$family.png", value: "6", family: family));
-      cards.add(Card(
+      _cards.add(Card(
           imagePath: "assets/7_of_$family.png", value: "7", family: family));
-      cards.add(Card(
+      _cards.add(Card(
           imagePath: "assets/8_of_$family.png", value: "8", family: family));
-      cards.add(Card(
+      _cards.add(Card(
           imagePath: "assets/9_of_$family.png", value: "9", family: family));
-      cards.add(Card(
+      _cards.add(Card(
           imagePath: "assets/10_of_$family.png", value: "10", family: family));
-      cards.add(Card(
+      _cards.add(Card(
           imagePath: "assets/jack_of_$family.png",
           value: "jack",
           family: family));
-      cards.add(Card(
+      _cards.add(Card(
           imagePath: "assets/queen_of_$family.png",
           value: "queen",
           family: family));
-      cards.add(Card(
+      _cards.add(Card(
           imagePath: "assets/king_of_$family.png",
           value: "king",
           family: family));
     }
 
-    cards.shuffle();
+    _cards.shuffle();
   }
 
   Deck.fromCards(List<Card> test) {
-    cards = List<Card>.from(test);
+    _cards = List<Card>.from(test);
+  }
+
+  void shuffle() {
+    _cards.shuffle();
+  }
+
+  List<Card> getCards() {
+    return List.from(_cards);
+  }
+
+  void remove(Card cardToRemove) {
+    _cards.remove(cardToRemove);
   }
 }

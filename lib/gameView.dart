@@ -406,7 +406,7 @@ class _WardWState extends State<WardW> {
           onDoubleTap: () {
             if (state.game.actualDeck.cards.contains(widget.card)) {
               BlocProvider.of<GameBloc>(context)
-                  .add(CardTappedGame(state.game, widget.card));
+                  .add(CardRevealEvent(widget.card));
             }
           },
           child: Padding(

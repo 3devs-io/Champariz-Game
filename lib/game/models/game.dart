@@ -14,7 +14,6 @@ class Game {
     numberOfPlayers = numberOfPlayers;
     playerList = [];
     deck = Deck();
-    actualDeck = Deck.fromCards(deck.cards);
   }
 
   void addPlayer(Player playerToAdd) {
@@ -23,7 +22,7 @@ class Game {
 
   void initGame() {
     currentPlayer = playerList[0]; //Setting up first player
-    deck.cards.shuffle(); //Randomizing cards
+    deck.shuffle(); //Randomizing cards
   }
 
   void nextPlayer() {
@@ -36,11 +35,15 @@ class Game {
   }
 
   void play(cards.Card cardToRemove, {bool rememberLastCard}) {
-    actualDeck.cards.remove(cardToRemove);
-    if (rememberLastCard) {
+    deck.remove(cardToRemove);
+    if (!rememberLastCard) {
       lastCardPlayed = null;
     } else {
       lastCardPlayed = cardToRemove;
     }
+  }
+
+  bool isLastCardNotNull() {
+    return lastCardPlayed != null;
   }
 }

@@ -1,3 +1,4 @@
+import 'package:champariz_game/game/models/card.dart';
 import 'package:champariz_game/game/models/game.dart';
 import 'package:champariz_game/player/models/player.dart';
 import 'package:equatable/equatable.dart';
@@ -16,24 +17,38 @@ class UnloadedGame extends GameState {
 }
 
 class PlayingState extends GameState {
-  const PlayingState();
+  final Player actualPlayer;
+  final List<Card> deck;
+
+  const PlayingState(this.actualPlayer, this.deck);
+
+  @override
+  List<Object> get props => [actualPlayer, deck];
+}
+
+class DrinkState extends GameState {
+  final String actualPlayer;
+  final String sips;
+  const DrinkState(this.actualPlayer, this.sips);
 
   @override
   List<Object> get props => [];
 }
 
-class DrinkState extends GameState {
-  const DrinkState();
+class EveryoneDrinkState extends GameState {
+  const EveryoneDrinkState();
 
   @override
   List<Object> get props => [];
 }
 
 class GiveDrinkState extends GameState {
-  const GiveDrinkState();
+  final String actualPlayer;
+  final String sips;
+  const GiveDrinkState(this.actualPlayer, this.sips);
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [actualPlayer, sips];
 }
 
 class StatsState extends GameState {
