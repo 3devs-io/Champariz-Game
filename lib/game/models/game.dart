@@ -10,8 +10,7 @@ class Game {
   Deck actualDeck;
   cards.Card lastCardPlayed;
 
-  Game(int numberOfPlayers) {
-    numberOfPlayers = numberOfPlayers;
+  Game(this.numberOfPlayers) {
     playerList = [];
     deck = Deck();
   }

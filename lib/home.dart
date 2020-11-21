@@ -33,7 +33,6 @@ class _HomeState extends State<Home> {
         if (state is GameStart) {
           BlocProvider.of<GameBloc>(context).add(LoadGameEvent(state.game));
           BlocProvider.of<PlayerBloc>(context).add(const NewGame());
-
           Navigator.pushNamed(context, gameViewRoute);
         }
       },

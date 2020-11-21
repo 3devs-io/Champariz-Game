@@ -74,4 +74,10 @@ class GameBloc extends Bloc<GameEvent, GameState> {
       yield PlayingState(game.currentPlayer, game.deck.getCards());
     }
   }
+
+  @override
+  void onTransition(Transition<GameEvent, GameState> transition) {
+    print(transition);
+    super.onTransition(transition);
+  }
 }
