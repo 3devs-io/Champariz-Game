@@ -1,4 +1,5 @@
 import 'package:champariz_game/game/models/game.dart';
+import 'package:champariz_game/player/models/player.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 import 'package:champariz_game/game/models/card.dart' as cards;
@@ -26,17 +27,21 @@ class CardRevealEvent extends GameEvent {
   List<Object> get props => [tapped];
 }
 
-class DrankEvent extends GameEvent {
-  const DrankEvent();
-
+class GaveDrinkEvent extends GameEvent {
+  final Player player;
+  final int sips;
+  const GaveDrinkEvent(this.player, this.sips);
   @override
   List<Object> get props => [];
 }
 
-class GaveDrinkEvent extends GameEvent {
-  const GaveDrinkEvent();
+class DrankEvent extends GameEvent {
+  final List<Player> playersList;
+  final int sips;
+  const DrankEvent(this.playersList, this.sips);
+
   @override
-  List<Object> get props => [];
+  List<Object> get props => [playersList, sips];
 }
 
 class StatsSeenEvent extends GameEvent {

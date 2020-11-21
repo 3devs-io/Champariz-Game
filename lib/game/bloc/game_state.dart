@@ -1,10 +1,7 @@
 import 'package:champariz_game/game/models/card.dart';
-import 'package:champariz_game/game/models/game.dart';
 import 'package:champariz_game/player/models/player.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
-
-import '../models/game.dart';
 
 @immutable
 abstract class GameState extends Equatable {
@@ -27,32 +24,34 @@ class PlayingState extends GameState {
 }
 
 class DrinkState extends GameState {
-  final String actualPlayer;
-  final String sips;
+  final Player actualPlayer;
+  final int sips;
   const DrinkState(this.actualPlayer, this.sips);
 
   @override
   List<Object> get props => [];
 }
 
-class EveryoneDrinkState extends GameState {
-  const EveryoneDrinkState();
-
-  @override
-  List<Object> get props => [];
-}
-
 class GiveDrinkState extends GameState {
-  final String actualPlayer;
-  final String sips;
+  final Player actualPlayer;
+  final int sips;
   const GiveDrinkState(this.actualPlayer, this.sips);
 
   @override
   List<Object> get props => [actualPlayer, sips];
 }
 
+class EveryoneDrinkState extends GameState {
+  final List<Player> playersList;
+  const EveryoneDrinkState(this.playersList);
+
+  @override
+  List<Object> get props => [playersList];
+}
+
 class StatsState extends GameState {
-  const StatsState();
+  final List<Player> playersList;
+  const StatsState(this.playersList);
 
   @override
   List<Object> get props => [];

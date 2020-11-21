@@ -46,4 +46,16 @@ class Game {
   bool isLastCardNotNull() {
     return lastCardPlayed != null;
   }
+
+  bool isGameEnded() {
+    if (deck.getCards().length == 1) {
+      if (!isLastCardNotNull()) {
+        if (!deck.getCards()[0].isSeven()) {
+          return true;
+        }
+      }
+    }
+
+    return deck.getCards().isEmpty;
+  }
 }

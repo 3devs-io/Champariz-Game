@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:bloc/bloc.dart';
 import 'package:champariz_game/game/models/card.dart';
 import 'package:champariz_game/game/models/game.dart';
+import 'package:champariz_game/player/models/player.dart';
 import './bloc.dart';
 
 class GameBloc extends Bloc<GameEvent, GameState> {
@@ -21,6 +22,12 @@ class GameBloc extends Bloc<GameEvent, GameState> {
     if (event is CardRevealEvent) {
       yield* _cardReveal(event.tapped);
     }
+    if (event is GaveDrinkEvent) {
+      yield* _gaveDrink(event.player, event.sips);
+    }
+    if (event is DrankEvent) {
+      yield* _drank(event.playersList, event.sips);
+    }
   }
 
   Stream<GameState> _mapInit(Game game) async* {
@@ -37,21 +44,34 @@ class GameBloc extends Bloc<GameEvent, GameState> {
       if (game.isLastCardNotNull()) {
         //Send State
         if (game.lastCardPlayed.pair(card)) {
-          yield GiveDrinkState(
-              game.currentPlayer.getName(), card.valueToInt().toString());
+          yield GiveDrinkState(game.currentPlayer, card.valueToInt());
         } else {
           if (game.lastCardPlayed.sameFamily(card)) {
-            yield const EveryoneDrinkState();
+            yield EveryoneDrinkState(List.from(game.playerList));
           } else {
             yield DrinkState(
-                game.currentPlayer.getName(),
+                game.currentPlayer,
                 sqrt((game.lastCardPlayed.valueToInt() - card.valueToInt()) *
                         (game.lastCardPlayed.valueToInt() - card.valueToInt()))
-                    .toInt()
-                    .toString());
+                    .toInt());
           }
         }
       }
+    }
+  }
+
+  Stream<GameState> _gaveDrink(Player player, int sips) async* {
+    yield DrinkState(player, sips);
+  }
+
+  Stream<GameState> _drank(List<Player> playerList, int sips) async* {
+    for (final Player player in playerList) {
+      player.drink(sips);
+    }
+    if (game.isGameEnded()) {
+      yield StatsState(List.from(game.playerList));
+    } else {
+      yield PlayingState(game.currentPlayer, game.deck.getCards());
     }
   }
 }
