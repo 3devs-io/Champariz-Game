@@ -1,6 +1,7 @@
 import 'package:champariz_game/game/models/card.dart';
 import 'package:champariz_game/player/models/player.dart';
 import 'package:champariz_game/game/models/card.dart' as cards;
+import 'package:flutter/widgets.dart';
 
 class Game {
   int numberOfPlayers;
@@ -33,9 +34,9 @@ class Game {
     }
   }
 
-  void play(cards.Card cardToRemove, {bool rememberLastCard}) {
+  void play(cards.Card cardToRemove) {
     deck.remove(cardToRemove);
-    if (!rememberLastCard) {
+    if (lastCardPlayed != null || cardToRemove.isSeven()) {
       lastCardPlayed = null;
     } else {
       lastCardPlayed = cardToRemove;

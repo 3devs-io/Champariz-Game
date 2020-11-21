@@ -29,7 +29,16 @@ class DrinkState extends GameState {
   const DrinkState(this.actualPlayer, this.sips);
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [actualPlayer, sips];
+}
+
+class FinishDrinkState extends GameState {
+  final Player actualPlayer;
+
+  const FinishDrinkState(this.actualPlayer);
+
+  @override
+  List<Object> get props => [actualPlayer];
 }
 
 class GiveDrinkState extends GameState {
@@ -54,7 +63,7 @@ class StatsState extends GameState {
   const StatsState(this.playersList);
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [playersList];
 }
 
 class EndState extends GameState {

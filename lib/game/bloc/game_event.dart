@@ -32,7 +32,7 @@ class GaveDrinkEvent extends GameEvent {
   final int sips;
   const GaveDrinkEvent(this.player, this.sips);
   @override
-  List<Object> get props => [];
+  List<Object> get props => [player, sips];
 }
 
 class DrankEvent extends GameEvent {

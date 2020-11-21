@@ -37,12 +37,10 @@ class GameBloc extends Bloc<GameEvent, GameState> {
   }
 
   Stream<GameState> _cardReveal(Card card) async* {
-    game.play(card);
     if (card.isSeven()) {
-      //Send State
+      yield FinishDrinkState(game.currentPlayer);
     } else {
       if (game.isLastCardNotNull()) {
-        //Send State
         if (game.lastCardPlayed.pair(card)) {
           yield GiveDrinkState(game.currentPlayer, card.valueToInt());
         } else {
@@ -58,6 +56,7 @@ class GameBloc extends Bloc<GameEvent, GameState> {
         }
       }
     }
+    game.play(card);
   }
 
   Stream<GameState> _gaveDrink(Player player, int sips) async* {
