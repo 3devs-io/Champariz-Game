@@ -10,21 +10,20 @@ import 'package:fl_chart/fl_chart.dart';
 import 'game/bloc/game_state.dart';
 
 class GameView extends StatefulWidget {
-  GameView({Key key}) : super(key: key);
+  const GameView({Key key}) : super(key: key);
 
   @override
   _GameViewState createState() => _GameViewState();
 }
 
 class _GameViewState extends State<GameView> {
-  List<Widget> cards(Game game) {
-    List<Widget> tempList = List<Widget>();
-
-    game.deck.cards.forEach((card) {
-      tempList.add(WardW(
+  List<Widget> generateCards(List<cards.Card> deck) {
+    final List<Widget> tempList = [];
+    for (final cards.Card card in deck) {
+      tempList.add(CardW(
         card: card,
       ));
-    });
+    }
 
     return tempList;
   }
@@ -36,306 +35,24 @@ class _GameViewState extends State<GameView> {
         onWillPop: () => Future.value(false),
         child: BlocListener<GameBloc, GameState>(
           listener: (context, state) async {
-            if (state is EndedGame) {
-              showDialog<void>(
-                context: context,
-                builder: (BuildContext context) {
-                  List<BarChartGroupData> barGroup = [];
-                  int count = 0;
-                  state.playerList.forEach((player) {
-                    barGroup.add(
-                      BarChartGroupData(
-                        x: count,
-                        barRods: [
-                          BarChartRodData(
-                              y: player.getNbGorgees().toDouble(),
-                              colors: [
-                                Colors.lightBlueAccent,
-                                Colors.greenAccent
-                              ])
-                        ],
-                        showingTooltipIndicators: [0],
-                      ),
-                    );
-                    count++;
-                  });
-                  return AlertDialog(
-                    title: Text(
-                      'Récapitulatif de partie',
-                      style: GoogleFonts.getFont(
-                        'Raleway',
-                        color: Colors.black,
-                      ),
-                    ),
-                    content: SingleChildScrollView(
-                      child: ListBody(
-                        children: <Widget>[
-                          AspectRatio(
-                            aspectRatio: 1.7,
-                            child: Card(
-                              elevation: 0,
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(4)),
-                              color: const Color(0xff2c4260),
-                              child: BarChart(
-                                BarChartData(
-                                  alignment: BarChartAlignment.spaceAround,
-                                  maxY: 20,
-                                  barTouchData: BarTouchData(
-                                    enabled: false,
-                                    touchTooltipData: BarTouchTooltipData(
-                                      tooltipBgColor: Colors.transparent,
-                                      tooltipPadding: const EdgeInsets.all(0),
-                                      tooltipBottomMargin: 8,
-                                      getTooltipItem: (
-                                        BarChartGroupData group,
-                                        int groupIndex,
-                                        BarChartRodData rod,
-                                        int rodIndex,
-                                      ) {
-                                        return BarTooltipItem(
-                                          rod.y.round().toString(),
-                                          TextStyle(
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        );
-                                      },
-                                    ),
-                                  ),
-                                  titlesData: FlTitlesData(
-                                    show: true,
-                                    bottomTitles: SideTitles(
-                                      showTitles: true,
-                                      getTextStyles: (value) => const TextStyle(
-                                          color: Color(0xff7589a2),
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 14),
-                                      margin: 20,
-                                      getTitles: (double value) {
-                                        return state.playerList[value.toInt()]
-                                            .getName();
-                                      },
-                                    ),
-                                    leftTitles: SideTitles(showTitles: false),
-                                  ),
-                                  borderData: FlBorderData(
-                                    show: false,
-                                  ),
-                                  barGroups: barGroup,
-                                ),
-                              ),
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                    actions: <Widget>[
-                      Center(
-                        child: RaisedButton(
-                          splashColor: Colors.white,
-                          elevation: 8.0,
-                          child: Text(
-                            "Ok",
-                            style: GoogleFonts.getFont(
-                              'Raleway',
-                              color: Colors.white,
-                            ),
-                          ),
-                          color: Theme.of(context).accentColor,
-                          shape: new RoundedRectangleBorder(
-                              borderRadius: new BorderRadius.circular(30.0)),
-                          onPressed: () {
-                            Navigator.pushNamed(context, homeRoute);
-                          },
-                        ),
-                      )
-                    ],
-                  );
-                },
-              );
-            }
-            if (state is DrinkingGame) {
+            if (state is DrinkState) {
               await showDialog<void>(
                 context: context,
                 builder: (BuildContext context) {
-                  return AlertDialog(
-                    title: Text(
-                      'Il est temps de boire !',
-                      style: GoogleFonts.getFont(
-                        'Raleway',
-                        color: Colors.black,
-                      ),
-                    ),
-                    content: SingleChildScrollView(
-                      child: ListBody(
-                        children: <Widget>[
-                          Text(
-                            state.toDrink,
-                            style: TextStyle(color: Colors.black),
-                          ),
-                        ],
-                      ),
-                    ),
-                    actions: <Widget>[
-                      Center(
-                        child: RaisedButton(
-                          splashColor: Colors.white,
-                          elevation: 8.0,
-                          child: Text(
-                            "Ok",
-                            style: GoogleFonts.getFont(
-                              'Raleway',
-                              color: Colors.white,
-                            ),
-                          ),
-                          color: Theme.of(context).accentColor,
-                          shape: new RoundedRectangleBorder(
-                              borderRadius: new BorderRadius.circular(30.0)),
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                          },
-                        ),
-                      )
-                    ],
-                  );
+                  return const PersonalAlertDialog();
                 },
-              ).then((value) {
-                if (state.isFinished) {
-                  showDialog<void>(
-                    context: context,
-                    builder: (BuildContext context) {
-                      List<BarChartGroupData> barGroup = [];
-                      int count = 0;
-                      state.players.forEach((player) {
-                        barGroup.add(
-                          BarChartGroupData(
-                            x: count,
-                            barRods: [
-                              BarChartRodData(
-                                  y: player.getNbGorgees().toDouble(),
-                                  colors: [
-                                    Colors.lightBlueAccent,
-                                    Colors.greenAccent
-                                  ])
-                            ],
-                            showingTooltipIndicators: [0],
-                          ),
-                        );
-                        count++;
-                      });
-                      return AlertDialog(
-                        title: Text(
-                          'Récapitulatif de partie',
-                          style: GoogleFonts.getFont(
-                            'Raleway',
-                            color: Colors.black,
-                          ),
-                        ),
-                        content: SingleChildScrollView(
-                          child: ListBody(
-                            children: <Widget>[
-                              AspectRatio(
-                                aspectRatio: 1.7,
-                                child: Card(
-                                  elevation: 0,
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(4)),
-                                  color: const Color(0xff2c4260),
-                                  child: BarChart(
-                                    BarChartData(
-                                      alignment: BarChartAlignment.spaceAround,
-                                      maxY: 20,
-                                      barTouchData: BarTouchData(
-                                        enabled: false,
-                                        touchTooltipData: BarTouchTooltipData(
-                                          tooltipBgColor: Colors.transparent,
-                                          tooltipPadding:
-                                              const EdgeInsets.all(0),
-                                          tooltipBottomMargin: 8,
-                                          getTooltipItem: (
-                                            BarChartGroupData group,
-                                            int groupIndex,
-                                            BarChartRodData rod,
-                                            int rodIndex,
-                                          ) {
-                                            return BarTooltipItem(
-                                              rod.y.round().toString(),
-                                              TextStyle(
-                                                color: Colors.white,
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            );
-                                          },
-                                        ),
-                                      ),
-                                      titlesData: FlTitlesData(
-                                        show: true,
-                                        bottomTitles: SideTitles(
-                                          showTitles: true,
-                                          getTextStyles: (value) =>
-                                              const TextStyle(
-                                                  color: Color(0xff7589a2),
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 14),
-                                          margin: 20,
-                                          getTitles: (double value) {
-                                            return state.players[value.toInt()]
-                                                .getName();
-                                          },
-                                        ),
-                                        leftTitles:
-                                            SideTitles(showTitles: false),
-                                      ),
-                                      borderData: FlBorderData(
-                                        show: false,
-                                      ),
-                                      barGroups: barGroup,
-                                    ),
-                                  ),
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
-                        actions: <Widget>[
-                          Center(
-                            child: RaisedButton(
-                              splashColor: Colors.white,
-                              elevation: 8.0,
-                              child: Text(
-                                "Ok",
-                                style: GoogleFonts.getFont(
-                                  'Raleway',
-                                  color: Colors.white,
-                                ),
-                              ),
-                              color: Theme.of(context).accentColor,
-                              shape: new RoundedRectangleBorder(
-                                  borderRadius:
-                                      new BorderRadius.circular(30.0)),
-                              onPressed: () {
-                                Navigator.pushNamed(context, homeRoute);
-                              },
-                            ),
-                          )
-                        ],
-                      );
-                    },
-                  );
-                }
-              });
+              );
             }
           },
           child: BlocBuilder<GameBloc, GameState>(builder: (context, state) {
-            if (state is LoadingGame) {
-              return Container(
+            if (state is PlayingState) {
+              return SizedBox(
                   child: Scaffold(
                       backgroundColor: Theme.of(context).primaryColor,
                       body: SafeArea(
                           child: Column(
                         children: <Widget>[
-                          Container(
+                          SizedBox(
                               height: MediaQuery.of(context).size.width / 7,
                               child: Center(
                                 child: RichText(
@@ -345,8 +62,7 @@ class _GameViewState extends State<GameView> {
                                           color: Colors.white, fontSize: 22),
                                       children: [
                                         TextSpan(
-                                          text: state.game.currentPlayer
-                                              .getName(),
+                                          text: state.actualPlayer.getName(),
                                           style: GoogleFonts.getFont('Raleway',
                                               color: Colors.white,
                                               fontSize: 24,
@@ -369,7 +85,7 @@ class _GameViewState extends State<GameView> {
                             child: GridView.count(
                               controller: _scrollController,
                               crossAxisCount: 5,
-                              children: cards(state.game),
+                              children: generateCards(state.deck),
                             ),
                           )),
                         ],
@@ -388,41 +104,81 @@ class _GameViewState extends State<GameView> {
   }
 }
 
-class WardW extends StatefulWidget {
+class CardW extends StatelessWidget {
   final cards.Card card;
-  WardW({Key key, @required this.card}) : super(key: key);
+  const CardW({Key key, @required this.card}) : super(key: key);
 
-  @override
-  _WardWState createState() => _WardWState();
-}
-
-class _WardWState extends State<WardW> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<GameBloc, GameState>(builder: (context, state) {
-      if (state is LoadingGame) {
-        return Container(
+      if (state is PlayingState) {
+        return SizedBox(
             child: GestureDetector(
           onDoubleTap: () {
-            if (state.game.actualDeck.cards.contains(widget.card)) {
-              BlocProvider.of<GameBloc>(context)
-                  .add(CardRevealEvent(widget.card));
+            if (state.deck.contains(card)) {
+              BlocProvider.of<GameBloc>(context).add(CardRevealEvent(card));
             }
           },
           child: Padding(
+            padding: const EdgeInsets.fromLTRB(5, 5, 5, 5),
             child: Image.asset(
-              !state.game.actualDeck.cards.contains(widget.card)
-                  ? widget.card.imagePath
-                  : "assets/back.png",
+              !state.deck.contains(card) ? card.imagePath : "assets/back.png",
               width: 100,
               height: 50,
             ),
-            padding: EdgeInsets.fromLTRB(5, 5, 5, 5),
           ),
         ));
       }
 
-      return Text("An error has occured");
+      return const Text("An error has occured");
     });
+  }
+}
+
+class PersonalAlertDialog extends StatelessWidget {
+  const PersonalAlertDialog({Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: Text(
+        'Il est temps de boire !',
+        style: GoogleFonts.getFont(
+          'Raleway',
+          color: Colors.black,
+        ),
+      ),
+      content: SingleChildScrollView(
+        child: ListBody(
+          children: <Widget>[
+            Text(
+              "TEST",
+              style: TextStyle(color: Colors.black),
+            ),
+          ],
+        ),
+      ),
+      actions: <Widget>[
+        Center(
+          child: RaisedButton(
+            splashColor: Colors.white,
+            elevation: 8.0,
+            color: Theme.of(context).accentColor,
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(30.0)),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: Text(
+              "Ok",
+              style: GoogleFonts.getFont(
+                'Raleway',
+                color: Colors.white,
+              ),
+            ),
+          ),
+        )
+      ],
+    );
   }
 }

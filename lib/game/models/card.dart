@@ -1,5 +1,4 @@
 import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
 
 class Card extends Equatable {
   final String imagePath;
@@ -11,17 +10,6 @@ class Card extends Equatable {
     this.value,
     this.family,
   });
-
-  Widget toWidget() {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(5, 5, 5, 5),
-      child: Image.asset(
-        imagePath,
-        width: 100,
-        height: 50,
-      ),
-    );
-  }
 
   int valueToInt() {
     switch (value) {
