@@ -37,6 +37,7 @@ class GameBloc extends Bloc<GameEvent, GameState> {
   }
 
   Stream<GameState> _cardReveal(Card card) async* {
+    bool shouldYieldAfterPlay = false;
     if (card.isSeven()) {
       yield FinishDrinkState(game.currentPlayer);
     } else {
@@ -54,9 +55,15 @@ class GameBloc extends Bloc<GameEvent, GameState> {
                     .toInt());
           }
         }
+      } else {
+        //We need to play before Yield cause we are sending a new PlayingState
+        shouldYieldAfterPlay = true;
       }
     }
     game.play(card);
+    if (shouldYieldAfterPlay) {
+      yield PlayingState(game.currentPlayer, game.deck.getCards());
+    }
   }
 
   Stream<GameState> _gaveDrink(Player player, int sips) async* {

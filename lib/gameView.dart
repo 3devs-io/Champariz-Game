@@ -46,59 +46,53 @@ class _GameViewState extends State<GameView> {
           },
           child: BlocBuilder<GameBloc, GameState>(builder: (context, state) {
             if (state is PlayingState) {
-              return SizedBox(
-                  child: Scaffold(
-                      backgroundColor: Theme.of(context).primaryColor,
-                      body: SafeArea(
-                          child: Column(
-                        children: <Widget>[
-                          SizedBox(
-                              height: MediaQuery.of(context).size.width / 7,
-                              child: Center(
-                                child: RichText(
-                                  text: TextSpan(
-                                      text: "C'est à ",
+              return Scaffold(
+                  backgroundColor: Theme.of(context).primaryColor,
+                  body: SafeArea(
+                      child: Column(
+                    children: <Widget>[
+                      SizedBox(
+                          height: MediaQuery.of(context).size.width / 7,
+                          child: Center(
+                            child: RichText(
+                              text: TextSpan(
+                                  text: "C'est à ",
+                                  style: GoogleFonts.getFont('Raleway',
+                                      color: Colors.white, fontSize: 22),
+                                  children: [
+                                    TextSpan(
+                                      text: state.actualPlayer.getName(),
+                                      style: GoogleFonts.getFont('Raleway',
+                                          color: Colors.white,
+                                          fontSize: 24,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    TextSpan(
+                                      text: " de jouer",
                                       style: GoogleFonts.getFont('Raleway',
                                           color: Colors.white, fontSize: 22),
-                                      children: [
-                                        TextSpan(
-                                          text: state.actualPlayer.getName(),
-                                          style: GoogleFonts.getFont('Raleway',
-                                              color: Colors.white,
-                                              fontSize: 24,
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                        TextSpan(
-                                          text: " de jouer",
-                                          style: GoogleFonts.getFont('Raleway',
-                                              color: Colors.white,
-                                              fontSize: 22),
-                                        )
-                                      ]),
-                                ),
-                              )),
-                          Expanded(
-                              child: Scrollbar(
-                            isAlwaysShown: true,
-                            controller: _scrollController,
-                            thickness: 5,
-                            child: GridView.count(
-                              controller: _scrollController,
-                              crossAxisCount: 5,
-                              children: generateCards(state.deck),
+                                    )
+                                  ]),
                             ),
                           )),
-                        ],
-                      ))));
+                      Expanded(
+                          child: Scrollbar(
+                        isAlwaysShown: true,
+                        controller: _scrollController,
+                        thickness: 5,
+                        child: GridView.count(
+                          controller: _scrollController,
+                          crossAxisCount: 5,
+                          children: generateCards(state.deck),
+                        ),
+                      )),
+                    ],
+                  )));
             }
 
-            return Text(
-              "An error has occured",
-              style: GoogleFonts.getFont(
-                'Raleway',
-                color: Colors.white,
-              ),
-            );
+            return Scaffold(
+                backgroundColor: Theme.of(context).primaryColor,
+                body: Container());
           }),
         ));
   }
