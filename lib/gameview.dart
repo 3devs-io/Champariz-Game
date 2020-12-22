@@ -1,6 +1,5 @@
 import 'package:champariz_game/game/models/card.dart' as cards;
 import 'package:champariz_game/game/bloc/bloc.dart';
-import 'package:champariz_game/game/models/game.dart';
 import 'package:champariz_game/player/models/player.dart';
 import 'package:champariz_game/router.dart';
 import 'package:flutter/material.dart';
@@ -35,9 +34,9 @@ class _GameViewState extends State<GameView> {
     return WillPopScope(
         onWillPop: () => Future.value(false),
         child: BlocListener<GameBloc, GameState>(
-          listener: (context, state) async {
+          listener: (context, state) {
             if (state is DrinkState) {
-              await showDialog<void>(
+              showDialog<void>(
                 context: context,
                 builder: (BuildContext context) {
                   return PersonalAlertDialog(
@@ -54,7 +53,7 @@ class _GameViewState extends State<GameView> {
               );
             }
             if (state is FinishDrinkState) {
-              await showDialog<void>(
+              showDialog<void>(
                 context: context,
                 builder: (BuildContext context) {
                   return PersonalAlertDialog(
@@ -70,7 +69,7 @@ class _GameViewState extends State<GameView> {
               );
             }
             if (state is EveryoneDrinkState) {
-              await showDialog<void>(
+              showDialog<void>(
                 context: context,
                 builder: (BuildContext context) {
                   return PersonalAlertDialog(
@@ -87,7 +86,7 @@ class _GameViewState extends State<GameView> {
               );
             }
             if (state is GiveDrinkState) {
-              await showDialog<void>(
+              showDialog<void>(
                 context: context,
                 builder: (BuildContext context) {
                   Player dropdownValue;
@@ -125,6 +124,9 @@ class _GameViewState extends State<GameView> {
                   );
                 },
               );
+            }
+            if (state is EndState) {
+              Navigator.pushReplacementNamed(context, homeRoute);
             }
           },
           child: BlocBuilder<GameBloc, GameState>(builder: (context, state) {
