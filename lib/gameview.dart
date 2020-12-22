@@ -94,38 +94,74 @@ class _GameViewState extends State<GameView> {
                 context: context,
                 builder: (BuildContext context) {
                   Player dropdownValue;
-                  return PersonalAlertDialog(
-                    widgetList: [
-                      Text(
-                          "${state.actualPlayer.getName()} tu distribues ${state.sips.toString()} gorgées !"),
-                      DropdownButton<Player>(
-                        value: dropdownValue,
-                        icon: const Icon(Icons.arrow_downward),
-                        elevation: 16,
-                        style: const TextStyle(color: Color(0xff4da1a9)),
-                        underline: Container(
-                          height: 2,
-                          color: const Color(0xff4da1a9),
+                  return StatefulBuilder(builder: (context, setState) {
+                    return AlertDialog(
+                      title: Text(
+                        'Il est temps de boire !',
+                        style: GoogleFonts.getFont(
+                          'Raleway',
+                          color: Colors.black,
                         ),
-                        onChanged: (Player newValue) {
-                          setState(() {
-                            dropdownValue = newValue;
-                          });
-                        },
-                        items: state.playersList
-                            .map<DropdownMenuItem<Player>>((Player value) {
-                          return DropdownMenuItem<Player>(
-                            value: value,
-                            child: Text(value.getName()),
-                          );
-                        }).toList(),
-                      )
-                    ],
-                    callback: () {
-                      BlocProvider.of<GameBloc>(context)
-                          .add(GaveDrinkEvent(dropdownValue, state.sips));
-                    },
-                  );
+                      ),
+                      content: SingleChildScrollView(
+                        child: ListBody(
+                          children: [
+                            Text(
+                                "${state.actualPlayer.getName()} tu distribues ${state.sips.toString()} gorgées !"),
+                            DropdownButton<Player>(
+                              value: dropdownValue,
+                              icon: const Icon(Icons.arrow_downward),
+                              elevation: 16,
+                              style: const TextStyle(color: Color(0xff4da1a9)),
+                              underline: Container(
+                                height: 2,
+                                color: const Color(0xff4da1a9),
+                              ),
+                              onChanged: (Player newValue) {
+                                setState(() {
+                                  dropdownValue = newValue;
+                                });
+                              },
+                              items: state.playersList
+                                  .map<DropdownMenuItem<Player>>(
+                                      (Player value) {
+                                return DropdownMenuItem<Player>(
+                                  value: value,
+                                  child: Text(value.getName()),
+                                );
+                              }).toList(),
+                            )
+                          ],
+                        ),
+                      ),
+                      actions: <Widget>[
+                        Center(
+                          child: RaisedButton(
+                            splashColor: Colors.white,
+                            elevation: 8.0,
+                            color: Theme.of(context).accentColor,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(30.0)),
+                            onPressed: dropdownValue != null
+                                ? () {
+                                    Navigator.of(context).pop();
+                                    BlocProvider.of<GameBloc>(context).add(
+                                        GaveDrinkEvent(
+                                            dropdownValue, state.sips));
+                                  }
+                                : null,
+                            child: Text(
+                              "Ok",
+                              style: GoogleFonts.getFont(
+                                'Raleway',
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                        )
+                      ],
+                    );
+                  });
                 },
               );
             }
@@ -307,7 +343,7 @@ class CardW extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.fromLTRB(5, 5, 5, 5),
             child: Image.asset(
-              !state.deck.contains(card) ? card.imagePath : "assets/back.png",
+              !state.deck.contains(card) ? "assets/back.png" : card.imagePath,
               width: 100,
               height: 50,
             ),
