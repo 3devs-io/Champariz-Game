@@ -26,7 +26,7 @@ class PlayerBloc extends Bloc<PlayerEvent, PlayerState> {
   Stream<PlayerState> _selectNamesOfPlayers(int numberOfPlayer) async* {
     yield SelectingNumberPlayers();
     try {
-      Game game = new Game(numberOfPlayer);
+      final Game game = Game(numberOfPlayer);
       yield InputNamesPlayer(game);
     } catch (_) {
       yield PlayerError();
@@ -35,11 +35,9 @@ class PlayerBloc extends Bloc<PlayerEvent, PlayerState> {
 
   Stream<PlayerState> _newGame() async* {
     yield PlayerError();
-    print("NEW GAME");
     try {
       yield SelectingNumberPlayers();
     } catch (_) {
-      print(_);
       yield PlayerError();
     }
   }
@@ -47,9 +45,10 @@ class PlayerBloc extends Bloc<PlayerEvent, PlayerState> {
   Stream<PlayerState> _selectedNameOfPlayer(String name) async* {
     yield SelectingNumberPlayers();
     try {
-      final InputNamesPlayer currentState = state;
-      Game currentGame = currentState.game;
+      final InputNamesPlayer currentState = state as InputNamesPlayer;
+      final Game currentGame = currentState.game;
       currentGame.addPlayer(Player(name));
+
       if (currentGame.numberOfPlayers == currentGame.playerList.length) {
         yield GameStart(currentGame);
       } else {

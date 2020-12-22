@@ -6,41 +6,57 @@ class Game {
   int numberOfPlayers;
   List<Player> playerList;
   Deck deck;
+  Deck fulldeck;
   Player currentPlayer;
-  Deck actualDeck;
+
   cards.Card lastCardPlayed;
 
-  Game(int numberOfPlayers) {
-    this.numberOfPlayers = numberOfPlayers;
-    this.playerList = List<Player>();
-    this.deck = Deck();
-    this.actualDeck = Deck.fromCards(this.deck.cards);
+  Game(this.numberOfPlayers) {
+    playerList = [];
+    deck = Deck();
+    fulldeck = Deck();
   }
 
-  addPlayer(Player playerToAdd) {
-    this.playerList.add(playerToAdd);
+  void addPlayer(Player playerToAdd) {
+    playerList.add(playerToAdd);
   }
 
-  initGame() {
+  void initGame() {
     currentPlayer = playerList[0]; //Setting up first player
-    deck.cards.shuffle(); //Randomizing cards
+    deck.shuffle(); //Randomizing cards
   }
 
-  nextPlayer() {
-    int index = this.playerList.indexOf(this.currentPlayer);
-    if (index == this.playerList.length - 1) {
-      this.currentPlayer = this.playerList[0];
+  void nextPlayer() {
+    final int index = playerList.indexOf(currentPlayer);
+    if (index == playerList.length - 1) {
+      currentPlayer = playerList[0];
     } else {
-      this.currentPlayer = this.playerList[index + 1];
+      currentPlayer = playerList[index + 1];
     }
   }
 
-  play(cards.Card cardToRemove, bool last) {
-    actualDeck.cards.remove(cardToRemove);
-    if (last) {
+  void play(cards.Card cardToRemove) {
+    deck.remove(cardToRemove);
+    if (lastCardPlayed != null || cardToRemove.isSeven()) {
       lastCardPlayed = null;
     } else {
       lastCardPlayed = cardToRemove;
     }
+  }
+
+  bool isLastCardNotNull() {
+    return lastCardPlayed != null;
+  }
+
+  bool isGameEnded() {
+    if (deck.getCards().length == 1) {
+      if (!isLastCardNotNull()) {
+        if (!deck.getCards()[0].isSeven()) {
+          return true;
+        }
+      }
+    }
+
+    return deck.getCards().isEmpty;
   }
 }
