@@ -37,6 +37,7 @@ class _GameViewState extends State<GameView> {
           listener: (context, state) {
             if (state is DrinkState) {
               showDialog<void>(
+                barrierDismissible: false,
                 context: context,
                 builder: (BuildContext context) {
                   return PersonalAlertDialog(
@@ -54,6 +55,7 @@ class _GameViewState extends State<GameView> {
             }
             if (state is FinishDrinkState) {
               showDialog<void>(
+                barrierDismissible: false,
                 context: context,
                 builder: (BuildContext context) {
                   return PersonalAlertDialog(
@@ -70,6 +72,7 @@ class _GameViewState extends State<GameView> {
             }
             if (state is EveryoneDrinkState) {
               showDialog<void>(
+                barrierDismissible: false,
                 context: context,
                 builder: (BuildContext context) {
                   return PersonalAlertDialog(
@@ -87,6 +90,7 @@ class _GameViewState extends State<GameView> {
             }
             if (state is GiveDrinkState) {
               showDialog<void>(
+                barrierDismissible: false,
                 context: context,
                 builder: (BuildContext context) {
                   Player dropdownValue;
@@ -143,6 +147,7 @@ class _GameViewState extends State<GameView> {
                 count++;
               }
               showDialog<void>(
+                barrierDismissible: false,
                 context: context,
                 builder: (BuildContext context) {
                   return AlertDialog(
