@@ -49,3 +49,9 @@ class StatsSeenEvent extends GameEvent {
   @override
   List<Object> get props => [];
 }
+
+class StatsDebug extends GameEvent {
+  const StatsDebug();
+  @override
+  List<Object> get props => [];
+}

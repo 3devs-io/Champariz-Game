@@ -125,6 +125,122 @@ class _GameViewState extends State<GameView> {
                 },
               );
             }
+            if (state is StatsState) {
+              final List<BarChartGroupData> barGroup = [];
+              int count = 0;
+              for (final Player player in state.playersList) {
+                barGroup.add(
+                  BarChartGroupData(
+                    x: count,
+                    barRods: [
+                      BarChartRodData(
+                          y: player.getNbGorgees().toDouble(),
+                          colors: [Colors.lightBlueAccent, Colors.greenAccent])
+                    ],
+                    showingTooltipIndicators: [0],
+                  ),
+                );
+                count++;
+              }
+              showDialog<void>(
+                context: context,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    title: Text(
+                      'On a bien bu !',
+                      style: GoogleFonts.getFont(
+                        'Raleway',
+                        color: Colors.black,
+                      ),
+                    ),
+                    content: SingleChildScrollView(
+                      child: ListBody(children: [
+                        AspectRatio(
+                          aspectRatio: 1.7,
+                          child: Card(
+                            elevation: 0,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(4)),
+                            color: const Color(0xff2c4260),
+                            child: BarChart(
+                              BarChartData(
+                                alignment: BarChartAlignment.spaceAround,
+                                maxY: 20,
+                                barTouchData: BarTouchData(
+                                  enabled: false,
+                                  touchTooltipData: BarTouchTooltipData(
+                                    tooltipBgColor: Colors.transparent,
+                                    tooltipPadding: const EdgeInsets.all(0),
+                                    tooltipBottomMargin: 8,
+                                    getTooltipItem: (
+                                      BarChartGroupData group,
+                                      int groupIndex,
+                                      BarChartRodData rod,
+                                      int rodIndex,
+                                    ) {
+                                      return BarTooltipItem(
+                                        rod.y.round().toString(),
+                                        const TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                ),
+                                titlesData: FlTitlesData(
+                                  show: true,
+                                  bottomTitles: SideTitles(
+                                    showTitles: true,
+                                    getTextStyles: (value) => const TextStyle(
+                                        color: Color(0xff7589a2),
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 14),
+                                    margin: 20,
+                                    getTitles: (double value) {
+                                      return state.playersList[value.toInt()]
+                                          .getName();
+                                    },
+                                  ),
+                                  leftTitles: SideTitles(showTitles: false),
+                                ),
+                                borderData: FlBorderData(
+                                  show: false,
+                                ),
+                                barGroups: barGroup,
+                              ),
+                            ),
+                          ),
+                        )
+                      ]),
+                    ),
+                    actions: <Widget>[
+                      Center(
+                        child: RaisedButton(
+                          splashColor: Colors.white,
+                          elevation: 8.0,
+                          color: Theme.of(context).accentColor,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30.0)),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                            BlocProvider.of<GameBloc>(context)
+                                .add(const StatsSeenEvent());
+                          },
+                          child: Text(
+                            "Ok",
+                            style: GoogleFonts.getFont(
+                              'Raleway',
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      )
+                    ],
+                  );
+                },
+              );
+            }
             if (state is EndState) {
               Navigator.pushReplacementNamed(context, homeRoute);
             }
@@ -171,6 +287,13 @@ class _GameViewState extends State<GameView> {
                           children: generateCards(state.fullDeck),
                         ),
                       )),
+                      // Debug button used to skip the game and go to Stats (end of the game)
+                      // ElevatedButton(
+                      //     onPressed: () {
+                      //       BlocProvider.of<GameBloc>(context)
+                      //           .add(const StatsDebug());
+                      //     },
+                      //     child: const Text("StatsDebug"))
                     ],
                   )));
             }

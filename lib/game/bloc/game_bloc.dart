@@ -11,7 +11,6 @@ class GameBloc extends Bloc<GameEvent, GameState> {
   GameBloc() : super(UnloadedGame());
 
   Game game;
-  int h = Random().nextInt(10);
 
   @override
   Stream<GameState> mapEventToState(
@@ -28,6 +27,12 @@ class GameBloc extends Bloc<GameEvent, GameState> {
     }
     if (event is DrankEvent) {
       yield* _drank(event.playersList, event.sips);
+    }
+    if (event is StatsSeenEvent) {
+      yield const EndState();
+    }
+    if (event is StatsDebug) {
+      yield StatsState(List.from(game.playerList));
     }
   }
 
@@ -79,8 +84,7 @@ class GameBloc extends Bloc<GameEvent, GameState> {
       player.drink(sips);
     }
     if (game.isGameEnded()) {
-      //yield StatsState(List.from(game.playerList));
-      yield const EndState();
+      yield StatsState(List.from(game.playerList));
     } else {
       game.nextPlayer();
       yield PlayingState(
