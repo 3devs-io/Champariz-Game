@@ -165,29 +165,7 @@ class _GameViewState extends State<GameView> {
                             child: BarChart(
                               BarChartData(
                                 alignment: BarChartAlignment.spaceAround,
-                                maxY: 20,
-                                barTouchData: BarTouchData(
-                                  enabled: false,
-                                  touchTooltipData: BarTouchTooltipData(
-                                    tooltipBgColor: Colors.transparent,
-                                    tooltipPadding: const EdgeInsets.all(0),
-                                    tooltipBottomMargin: 8,
-                                    getTooltipItem: (
-                                      BarChartGroupData group,
-                                      int groupIndex,
-                                      BarChartRodData rod,
-                                      int rodIndex,
-                                    ) {
-                                      return BarTooltipItem(
-                                        rod.y.round().toString(),
-                                        const TextStyle(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      );
-                                    },
-                                  ),
-                                ),
+                                maxY: 100,
                                 titlesData: FlTitlesData(
                                   show: true,
                                   bottomTitles: SideTitles(
@@ -287,7 +265,7 @@ class _GameViewState extends State<GameView> {
                           children: generateCards(state.fullDeck),
                         ),
                       )),
-                      // Debug button used to skip the game and go to Stats (end of the game)
+                      // Debug buttn to skip the game and go to StatsState
                       // ElevatedButton(
                       //     onPressed: () {
                       //       BlocProvider.of<GameBloc>(context)
